@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "name": "Indah Prakarya",
+        "username": "@indahpra",
+        "date": "4h",
+        "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
+        "image": "/img/paslon.jpg",
+        "likes": "965",
+        "replies": "800"
+    },
+    {
+        "id": 2,
+        "name": "Ahmad Sukamuljo",
+        "username": "@ahmad89",
+        "date": "2h",
+        "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
+        "image": "",
+        "likes": "490",
+        "replies": "230"
+    },
+    {
+        "id": 3,
+        "name": "Mega Kurniawan",
+        "username": "@megaa",
+        "date": "2min",
+        "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
+        "image": "/img/paslon.jpg",
+        "likes": "1200",
+        "replies": "590"
+    },
+    {
+        "id": 4,
+        "name": "Bagus Supratman",
+        "username": "@bang_bagus",
+        "date": "12h",
+        "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
+        "image": "",
+        "likes": "112",
+        "replies": "38"
+    },
+    {
+        "id": 5,
+        "name": "Bang Rojak",
+        "username": "@Rorojak",
+        "date": "1h",
+        "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
+        "image": "",
+        "likes": "209",
+        "replies": "200"
+    }
+]
