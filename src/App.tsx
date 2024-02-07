@@ -206,7 +206,7 @@ const Profile = () => {
 
                     <Flex justifyContent={"space-between"}>
                         <Avatar src="/img/paslon.jpg" size={"lg"} mt={"-12"} ml={4} />
-                        <Button size={"xs"} rounded={"xl"} bg={"grey"} color={"white"} opacity={"40%"}>
+                        <Button size={"xs"} rounded={"xl"}>
                             Edit Profile
                         </Button>
                     </Flex>
