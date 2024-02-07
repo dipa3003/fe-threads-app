@@ -5,6 +5,6 @@ export interface IThreads {
     created_at: string;
     content: string;
     image: string;
-    likes: string;
+    likes: number;
     replies: string;
 }

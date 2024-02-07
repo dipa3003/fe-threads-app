@@ -6,7 +6,7 @@
         "created_at": "4h",
         "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
         "image": "/img/paslon.jpg",
-        "likes": "965",
+        "likes": 980,
         "replies": "800"
     },
     {
@@ -16,7 +16,7 @@
         "created_at": "2h",
         "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
         "image": "",
-        "likes": "490",
+        "likes": 490,
         "replies": "230"
     },
     {
@@ -26,7 +26,7 @@
         "created_at": "2min",
         "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
         "image": "/img/paslon.jpg",
-        "likes": "1200",
+        "likes": 1287,
         "replies": "590"
     },
     {
@@ -36,7 +36,7 @@
         "created_at": "12h",
         "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
         "image": "",
-        "likes": "112",
+        "likes": 112,
         "replies": "38"
     },
     {
@@ -46,7 +46,7 @@
         "created_at": "1h",
         "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus impedit aut dolore ab harum veniam maxime a corporis commodi? Ipsum?",
         "image": "",
-        "likes": "209",
+        "likes": 306,
         "replies": "200"
     }
 ]
