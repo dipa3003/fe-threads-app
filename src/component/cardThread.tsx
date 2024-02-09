@@ -26,15 +26,15 @@ const CardThread = (Props: IThreads) => {
                     </Heading>
                     <HStack>
                         <Link fontWeight={"light"}>@{Props.username}</Link>
-                        <Text> . {Props.created_at}</Text>
+                        <Text> • {Props.created_at}</Text>
                     </HStack>
                 </Flex>
                 <Text>{Props.content}</Text>
                 {Props.image && <Image src={Props.image} objectFit={"cover"} boxSize="xs" my={5} />}
 
                 <Flex gap={10} alignItems={"center"}>
-                    <Flex gap={3} alignItems={"center"}>
-                        <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} />} aria-label={"icon"} />
+                    <Flex gap={2} alignItems={"center"}>
+                        <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
                         <Text>{countLike}</Text>
                     </Flex>
                     <Flex gap={3}>
