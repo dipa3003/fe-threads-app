@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Follow from "./pages/Follow";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
+import Register from "./pages/Register";
 // import "./app.css";
 
 // const router = createBrowserRouter(
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             {
-                path: "/home",
+                path: "/",
                 element: <Home />,
             },
             {
@@ -43,19 +44,23 @@ const router = createBrowserRouter([
                 path: "/follow",
                 element: <Follow />,
             },
-            {
-                path: "/login",
-                element: <Login />,
-            },
-            {
-                path: "/logout",
-                element: <Logout />,
-            },
         ],
+    },
+    {
+        path: "/register",
+        element: <Register />,
     },
     {
         path: "*",
         element: <NotFound />,
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/logout",
+        element: <Logout />,
     },
 ]);
 

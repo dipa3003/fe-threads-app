@@ -9,14 +9,14 @@ const Navbar = () => {
         // Set Responsive in Box container
         <Box display={{ base: "none", md: "block" }}>
             <Flex w={"25%"} p={10} flexDir={"column"} gap={8} bgColor={"white"} position={"fixed"} left={0}>
-                <Link to={"/home"}>
+                <Link to={"/"}>
                     <Heading color={"lime"}>LIFE</Heading>
                 </Link>
 
                 {/* <Link href="/test" display={"flex"} flexDir={"row"} alignItems={"center"} gap={2}>
                 </Link> */}
 
-                <NavLink to={"/home"}>
+                <NavLink to={"/"}>
                     <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
                         <GoHome />
                         <Text>Home</Text>
