@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { CgProfile } from "react-icons/cg";
 import { GoHeart, GoHome } from "react-icons/go";
 import { RiLogoutCircleLine, RiUserSearchLine } from "react-icons/ri";
@@ -6,51 +6,53 @@ import { NavLink, Link } from "react-router-dom";
 
 const Navbar = () => {
     return (
-        <Flex w={"25%"} p={10} flexDir={"column"} gap={8} bgColor={"white"} position={"fixed"} left={0}>
-            <Link to={"/"}>
-                <Heading color={"lime"}>LIFE</Heading>
-            </Link>
+        // Set Responsive in Box container
+        <Box display={{ base: "none", md: "block" }}>
+            <Flex w={"25%"} p={10} flexDir={"column"} gap={8} bgColor={"white"} position={"fixed"} left={0}>
+                <Link to={"/home"}>
+                    <Heading color={"lime"}>LIFE</Heading>
+                </Link>
 
-            {/* <Link href="/test" display={"flex"} flexDir={"row"} alignItems={"center"} gap={2}>
+                {/* <Link href="/test" display={"flex"} flexDir={"row"} alignItems={"center"} gap={2}>
                 </Link> */}
 
-            <NavLink to={"/home"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
-                    <GoHome />
-                    <Text>Home</Text>
-                </Flex>
-            </NavLink>
-            <NavLink to={"/profile"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
-                    <CgProfile />
-                    <Text>Profile</Text>
-                </Flex>
-            </NavLink>
-            <NavLink to={"/search"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
-                    <RiUserSearchLine />
-                    <Text>Search</Text>
-                </Flex>
-            </NavLink>
-            <NavLink to={"/follow"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
-                    <GoHeart />
-                    <Text>Follows</Text>
-                </Flex>
-            </NavLink>
-            <Link to={"/create-thread"}>
-                <Button colorScheme="whatsapp" variant="solid" w={"full"}>
-                    Create Post
-                </Button>
-            </Link>
-            <Link to={"/logout"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} mt={"100%"} color={"black"}>
-                    <RiLogoutCircleLine />
-                    Logout
-                </Flex>
-            </Link>
+                <NavLink to={"/home"}>
+                    <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
+                        <GoHome />
+                        <Text>Home</Text>
+                    </Flex>
+                </NavLink>
+                <NavLink to={"/profile"}>
+                    <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
+                        <CgProfile />
+                        <Text>Profile</Text>
+                    </Flex>
+                </NavLink>
+                <NavLink to={"/search"}>
+                    <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
+                        <RiUserSearchLine />
+                        <Text>Search</Text>
+                    </Flex>
+                </NavLink>
+                <NavLink to={"/follow"}>
+                    <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
+                        <GoHeart />
+                        <Text>Follows</Text>
+                    </Flex>
+                </NavLink>
+                <Link to={"/create-thread"}>
+                    <Button colorScheme="whatsapp" variant="solid" w={"full"}>
+                        Create Post
+                    </Button>
+                </Link>
+                <Link to={"/logout"}>
+                    <Flex flexDir={"row"} alignItems={"center"} gap={2} mt={"100%"} color={"black"}>
+                        <RiLogoutCircleLine />
+                        Logout
+                    </Flex>
+                </Link>
 
-            {/* <Link href="/search" display={"flex"} flexDir={"row"} alignItems={"center"} gap={2}>
+                {/* <Link href="/search" display={"flex"} flexDir={"row"} alignItems={"center"} gap={2}>
                     <RiUserSearchLine />
                     <Text>Search</Text>
                 </Link>
@@ -65,7 +67,7 @@ const Navbar = () => {
                     <Text>Profile</Text>
                 </Link> */}
 
-            {/* <Button colorScheme="whatsapp" variant="solid">
+                {/* <Button colorScheme="whatsapp" variant="solid">
                     <Link href={"/post"}>
                         <HStack>
                             <Text>Create Post</Text>
@@ -73,13 +75,14 @@ const Navbar = () => {
                     </Link>
                 </Button> */}
 
-            {/* <Link href={"/logout"}>
+                {/* <Link href={"/logout"}>
                     <HStack display={"flex"} flexDir={"row"} alignItems={"center"} gap={2} mt={"100%"}>
                         <RiLogoutCircleLine />
                         <Text>Logout</Text>
                     </HStack>
                 </Link> */}
-        </Flex>
+            </Flex>
+        </Box>
     );
 };
 export default Navbar;
