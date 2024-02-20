@@ -1,10 +1,22 @@
 import { Avatar, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { getLoginUser } from "../services/user.services";
+import { IUser } from "../interface/threads";
 
 const Profile = () => {
+    const [user, setUser] = useState<IUser | null>(null);
+    useEffect(() => {
+        async function fetchData() {
+            const id = localStorage.getItem("userId");
+            const userData = await getLoginUser(Number(id));
+            setUser(userData);
+        }
+        fetchData();
+    }, []);
     return (
         <>
-            <Flex bg={"white"} w={"40%"} p={10} flexDir={"column"} gap={5}>
+            <Flex position={"sticky"} top={"0"} bg={"white"} p={10} flexDir={"column"} gap={5}>
                 <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
                         My Profile
@@ -17,8 +29,14 @@ const Profile = () => {
                             Edit Profile
                         </Button>
                     </Flex>
-                    <Heading size="md">Stella Audhina</Heading>
-                    <Text fontSize={"sm"}>Pick over by the worm and weird fishes</Text>
+                    <Heading size="md">
+                        {user?.full_name}{" "}
+                        <Text fontSize={"sm"} color={"grey"} textColor={"gray"} fontWeight="light">
+                            @ {user?.username}
+                        </Text>
+                    </Heading>
+
+                    <Text fontSize={"sm"}>{user?.bio}</Text>
                     <Flex gap={4} fontSize={"sm"}>
                         <Text>985 following</Text>
                         <Text>890 following</Text>

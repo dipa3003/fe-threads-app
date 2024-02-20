@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const CardThread = (Props: IThreads) => {
     const [like, setLike] = useState(false);
-    const [countLike, setCountLike] = useState<number>(Props.likes);
+    const [countLike, setCountLike] = useState<number>(Props.likes_count);
     const [clickLike, setClickLike] = useState(false);
 
     function handleLike() {
@@ -16,13 +16,13 @@ const CardThread = (Props: IThreads) => {
     }
 
     return (
-        <Flex w={"100%"} gap={4} mt={8} key={Props.id}>
+        <Flex bg={"whitesmoke"} shadow={"xl"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"} key={Props.id}>
             <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
 
             <Flex flexDir={"column"} gap={2}>
                 <Flex gap={4} alignItems={"center"}>
                     <Heading as={"h5"} size={"sm"}>
-                        {Props.name}
+                        {Props.full_name}
                     </Heading>
                     <HStack>
                         <Link fontWeight={"light"}>@{Props.username}</Link>
