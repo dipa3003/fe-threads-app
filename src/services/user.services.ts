@@ -3,7 +3,7 @@ import { IAuth, IRegister } from "../interface/auth";
 
 export const getLoginUser = async (id: number) => {
     try {
-        const user = await axios.get(`http://localhost:5000/api/user/${id}`);
+        const user = await axios.get(`http://localhost:5000/api/users/${id}`);
         return user.data;
     } catch (error) {
         console.log(error);

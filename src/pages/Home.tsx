@@ -1,32 +1,20 @@
 import { Avatar, Box, Button, Flex, FormControl, HStack, Heading, Image, Input, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { IThreads, IUser } from "../interface/threads";
+import { IThreads } from "../interface/threads";
 import CardThread from "../component/cardThread";
 import { RiImageAddLine } from "react-icons/ri";
 import { getThreads } from "../services/thread.services";
-import { getLoginUser } from "../services/user.services";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const navigate = useNavigate();
     const [threads, setThreads] = useState<IThreads[] | null>(null);
-    const [userProfile, setUserProfile] = useState<IUser | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [postImg, setPostImg] = useState<any>();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) navigate("/login");
-
-        const userId = Number(localStorage.getItem("userId"));
-
-        async function fetchUserLogin() {
-            if (userId) {
-                const userLogin = await getLoginUser(userId);
-                setUserProfile(userLogin);
-            }
-        }
-        fetchUserLogin();
     }, [navigate]);
 
     useEffect(() => {
@@ -38,8 +26,6 @@ const Home = () => {
         }
         fetchData();
     }, []);
-
-    console.log("userProfile:", userProfile);
 
     return (
         <Flex w={"100%"} bg={"green"}>
@@ -59,11 +45,11 @@ const Home = () => {
                         </Box>
                         <input type="file" id="input-img" style={{ display: "none" }} onChange={(e) => setPostImg(URL.createObjectURL(e.target.files![0]))} />
                     </Box>
-                    <Button colorScheme="whatsapp" size="sm">
-                        Button
+                    <Button colorScheme="whatsapp" size="md">
+                        Post
                     </Button>
                 </HStack>
-                {postImg && <Image ml={20} mt={5} w={200} h={200} src={postImg}></Image>}
+                {postImg && <Image objectFit={"cover"} ml={20} mt={5} w={200} h={200} src={postImg}></Image>}
 
                 <VStack>
                     {threads &&
@@ -78,7 +64,7 @@ const Home = () => {
                                 content={thread.content}
                                 image={thread.image}
                                 likes_count={thread.likes_count}
-                                replies={700}
+                                replies_count={thread.replies_count}
                             />
                         ))}
                 </VStack>

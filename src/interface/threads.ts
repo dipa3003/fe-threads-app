@@ -11,7 +11,7 @@ export interface IThreads {
     image: string;
     likes?: object[];
     likes_count: number;
-    replies: number;
+    replies_count: number;
 }
 
 export interface IUser {
@@ -19,5 +19,7 @@ export interface IUser {
     bio: string;
     username: string;
     full_name: string;
-    profile_pic: string;
+    image: string;
+    following_count: number;
+    follower_count: number;
 }

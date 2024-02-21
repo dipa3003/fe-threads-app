@@ -15,8 +15,12 @@ const CardThread = (Props: IThreads) => {
         clickLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
     }
 
+    const getDetailThread = () => {
+        alert("clicked detail thread card");
+    };
+
     return (
-        <Flex bg={"whitesmoke"} shadow={"xl"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"} key={Props.id}>
+        <Flex bg={"lightgreen"} shadow={"xl"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"} key={Props.id} onClick={getDetailThread}>
             <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
 
             <Flex flexDir={"column"} gap={2}>
@@ -39,7 +43,7 @@ const CardThread = (Props: IThreads) => {
                     </Flex>
                     <Flex gap={3}>
                         <HiOutlineChatBubbleBottomCenterText size={25} />
-                        <Text>{Props.replies} Replies</Text>
+                        <Text>{Props.replies_count} Replies</Text>
                     </Flex>
                 </Flex>
             </Flex>

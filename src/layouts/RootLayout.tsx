@@ -6,7 +6,7 @@ import Profile from "../pages/Profile";
 const RootLayout = () => {
     return (
         <Flex bg="white" justifyContent={"space-between"} position={"relative"}>
-            <Box w={"25%"} display={{ base: "none", md: "block" }}>
+            <Box w={"25%"} display={{ base: "none", lg: "block" }}>
                 <Navbar />
             </Box>
 
@@ -14,7 +14,7 @@ const RootLayout = () => {
                 <Outlet />
             </Box>
 
-            <Box w={"40%"} bg={"yellow"} display={{ base: "none", lg: "block" }}>
+            <Box w={"40%"} display={{ base: "none", lg: "block" }}>
                 <Profile />
             </Box>
         </Flex>
