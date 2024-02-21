@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Follow from "./pages/Follow";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import DetailThread from "./pages/DetailThread";
 // import "./app.css";
 
 const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
                 path: "/follow",
                 element: <Follow />,
             },
+            {
+                path: "/detail-thread",
+                element: <DetailThread />,
+            },
         ],
     },
     {
@@ -48,13 +53,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-    return (
-        <>
-            <RouterProvider router={router} />
-            {/* <Flex>
-            </Flex> */}
-        </>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;

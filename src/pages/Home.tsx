@@ -28,7 +28,7 @@ const Home = () => {
     }, []);
 
     return (
-        <Flex w={"100%"} bg={"green"}>
+        <Box>
             <Flex w={{ base: "100%", md: "100%" }} bg={"white"} color={"black"} border={"2px"} borderColor={"whitesmoke"} p={10} flexDir={"column"}>
                 <Heading as={"h3"} size={"md"}>
                     Home
@@ -72,7 +72,7 @@ const Home = () => {
             {/* <Box w={"40%"} display={{ base: "none", lg: "block" }}>
                 <Profile />
             </Box> */}
-        </Flex>
+        </Box>
     );
 };
 

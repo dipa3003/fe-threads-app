@@ -9,3 +9,12 @@ export const getThreads = async () => {
         throw error;
     }
 };
+export const getThreadById = async (id: number) => {
+    try {
+        const threads = await axios.get(`http://localhost:5000/api/threads/${id}`);
+        return threads.data;
+    } catch (error) {
+        console.log("error getThreadById:", error);
+        throw error;
+    }
+};
