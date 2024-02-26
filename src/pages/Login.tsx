@@ -1,8 +1,9 @@
-import { Box, Button, FormControl, Heading, Input, Text } from "@chakra-ui/react";
+import { Box, Button, FormControl, Heading, Input, Text, useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { authLogin } from "../services/user.services";
 
 const Login = () => {
+    const toast = useToast();
     const navigate = useNavigate();
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
@@ -20,9 +21,17 @@ const Login = () => {
             const res = await authLogin(dataLogin, (status, token) => {
                 if (status === 200) {
                     localStorage.setItem("token", token);
+
+                    toast({
+                        title: "Login success.",
+                        description: "Welcome back to your account.",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                    });
+
                     navigate("/", { replace: true });
                 }
-                console.log("status:", status);
             });
             localStorage.setItem("userId", res.user.id);
             console.log("login_res", res);
@@ -42,7 +51,21 @@ const Login = () => {
                 <FormControl display={"flex"} flexDir={"column"} gap={6}>
                     <Input placeholder="Username" name="username" />
                     <Input placeholder="Password" name="password" />
-                    <Button colorScheme="whatsapp" variant="solid" w={"full"} type="submit">
+                    <Button
+                        colorScheme="whatsapp"
+                        variant="solid"
+                        w={"full"}
+                        type="submit"
+                        // onClick={() =>
+                        //     toast({
+                        //         title: "Login Success.",
+                        //         description: "You're login to your account.",
+                        //         status: "success",
+                        //         duration: 9000,
+                        //         isClosable: true,
+                        //     })
+                        // }
+                    >
                         Login
                     </Button>
                 </FormControl>

@@ -21,29 +21,34 @@ const Navbar = () => {
                     <Text>Home</Text>
                 </Flex>
             </NavLink>
-            <NavLink to={"/profile"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
-                    <CgProfile />
-                    <Text>Profile</Text>
-                </Flex>
-            </NavLink>
+
             <NavLink to={"/search"}>
                 <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
                     <RiUserSearchLine />
                     <Text>Search</Text>
                 </Flex>
             </NavLink>
+
             <NavLink to={"/follow"}>
                 <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
                     <GoHeart />
                     <Text>Follows</Text>
                 </Flex>
             </NavLink>
+
+            <NavLink to={"/profile"}>
+                <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"}>
+                    <CgProfile />
+                    <Text>Profile</Text>
+                </Flex>
+            </NavLink>
+
             <Link to={"/create-thread"}>
                 <Button colorScheme="whatsapp" variant="solid" w={"full"}>
                     Create Post
                 </Button>
             </Link>
+
             <Link to={"/login"}>
                 <Flex flexDir={"row"} alignItems={"center"} gap={2} mt={"100%"} color={"black"}>
                     <RiLogoutCircleLine />

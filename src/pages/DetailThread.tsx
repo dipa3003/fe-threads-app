@@ -25,12 +25,10 @@ export default function DetailThread() {
     useEffect(() => {
         async function fetchThreadData() {
             const dataThread = await getThreadById(Number(threadId));
-            console.log("dataThreadFetch", dataThread);
             setThread(dataThread);
         }
         fetchThreadData();
     }, [threadId]);
-    console.log("thread:", thread);
 
     function handleLike() {
         setLike(!like);
@@ -87,7 +85,7 @@ export default function DetailThread() {
                 </Flex>
 
                 {/* INPUT REPLY */}
-                <HStack spacing={4} mt={5}>
+                <HStack spacing={4} mt={5} mb={10}>
                     <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
                     <FormControl>
                         <Input type="text" placeholder="Type your reply here..." border={"none"} />
@@ -105,36 +103,42 @@ export default function DetailThread() {
                 {postImg && <Image objectFit={"cover"} ml={20} mt={5} w={200} h={200} src={postImg}></Image>}
 
                 {/* CARD LIST REPLY */}
-                <Flex bg={"whitesmoke"} p={5} pb={2} w={"100%"} gap={4} mt={10} borderRadius={"lg"}>
-                    <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
 
-                    <Flex flexDir={"column"} gap={2}>
-                        <Flex gap={4} alignItems={"center"}>
-                            <Heading as={"h5"} size={"sm"}>
-                                {"thread?.user.full_name"}
-                            </Heading>
-                            <HStack>
-                                <Link to={"/username"}>
-                                    <Text fontWeight={"light"}>@{thread?.username}</Text>
-                                </Link>
-                                <Text> • {thread?.created_at}</Text>
-                            </HStack>
-                        </Flex>
-                        <Text>{thread?.content}</Text>
-                        {/* {Props.image && <Image src={Props.image} objectFit={"cover"} boxSize="xs" my={5} />} */}
+                {thread?.replies &&
+                    thread.replies.map((reply) => (
+                        <Flex bg={"whitesmoke"} p={5} w={"100%"} gap={4} mt={2} borderRadius={"lg"} key={reply.id}>
+                            <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
 
-                        <Flex gap={10} alignItems={"center"}>
-                            <Flex gap={2} alignItems={"center"}>
-                                <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
-                                <Text>{countLike}</Text>
-                            </Flex>
-                            <Flex gap={3}>
-                                <HiOutlineChatBubbleBottomCenterText size={25} />
-                                <Text>{"600"} Replies</Text>
+                            <Flex flexDir={"column"} gap={2}>
+                                <Flex gap={4} alignItems={"center"}>
+                                    <Heading as={"h5"} size={"sm"}>
+                                        {reply.user.full_name}
+                                    </Heading>
+                                    <HStack>
+                                        <Link to={"/username"}>
+                                            <Text fontWeight={"light"}>@{reply.user.username}</Text>
+                                        </Link>
+                                        <Text> • {new Date(reply.created_at).toDateString()}</Text>
+                                    </HStack>
+                                </Flex>
+                                <Text>{reply?.content}</Text>
+                                {/* Image for replies */}
+                                {/* {reply.image && <Image src={reply.image} objectFit={"cover"} boxSize="xs" my={5} />} */}
+
+                                {/* Like and replies btn */}
+                                {/* <Flex gap={10} alignItems={"center"}>
+                                    <Flex gap={2} alignItems={"center"}>
+                                        <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
+                                        <Text>{countLike}</Text>
+                                    </Flex>
+                                    <Flex gap={3}>
+                                        <HiOutlineChatBubbleBottomCenterText size={25} />
+                                        <Text>{"600"} Replies</Text>
+                                    </Flex>
+                                </Flex> */}
                             </Flex>
                         </Flex>
-                    </Flex>
-                </Flex>
+                    ))}
             </Flex>
         </>
     );

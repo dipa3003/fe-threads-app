@@ -23,6 +23,17 @@ export interface IThreadById {
     created_at: string;
     content: string;
     image: string;
+    replies: {
+        id: number;
+        content: string;
+        created_at: string;
+        image: string;
+        user: {
+            id: number;
+            username: string;
+            full_name: string;
+        };
+    }[];
     likes_count: number;
     replies_count: number;
 }
@@ -35,4 +46,9 @@ export interface IUser {
     image: string;
     following_count: number;
     follower_count: number;
+}
+
+export interface IThread {
+    content: string;
+    image: string;
 }

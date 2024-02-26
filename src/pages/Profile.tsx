@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { getLoginUser } from "../services/user.services";
@@ -6,6 +6,7 @@ import { IUser } from "../interface/threads";
 
 const Profile = () => {
     const [user, setUser] = useState<IUser | null>(null);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     useEffect(() => {
         async function fetchData() {
             const id = localStorage.getItem("userId");
@@ -17,6 +18,27 @@ const Profile = () => {
 
     return (
         <>
+            {/* MODAL EDIT PROFILE */}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Profile</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {/* <Text>body modal</Text> */}
+                        <Input type="text" placeholder="Username" />
+                        <Input type="text" placeholder="Bio" />
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button variant="ghost">Save</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
             <Flex position={"sticky"} top={"0"} bg={"white"} p={10} flexDir={"column"} gap={5}>
                 <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
@@ -26,7 +48,7 @@ const Profile = () => {
 
                     <Flex justifyContent={"space-between"}>
                         <Avatar src={user?.image ? user?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} />
-                        <Button size={"xs"} rounded={"xl"} bg={"black"} color={"white"}>
+                        <Button size={"xs"} rounded={"xl"} colorScheme="gray" onClick={onOpen}>
                             Edit Profile
                         </Button>
                     </Flex>
@@ -43,6 +65,8 @@ const Profile = () => {
                         <Text>{user?.following_count} following</Text>
                     </Flex>
                 </Flex>
+
+                {/* LIST SUGGESTED USER CARD */}
                 <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
                         Suggested For You
@@ -60,7 +84,7 @@ const Profile = () => {
                             </Flex>
                         </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} bg={"black"} color={"white"} opacity={"40%"}>
+                        <Button size={"xs"} rounded={"xl"} colorScheme="gray" opacity={"40%"}>
                             Following
                         </Button>
                     </Flex>
@@ -77,7 +101,7 @@ const Profile = () => {
                             </Flex>
                         </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} bg={"black"} color={"white"}>
+                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
                             Follow
                         </Button>
                     </Flex>
@@ -94,7 +118,7 @@ const Profile = () => {
                             </Flex>
                         </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} bg={"black"} color={"white"}>
+                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
                             Follow
                         </Button>
                     </Flex>
@@ -111,11 +135,13 @@ const Profile = () => {
                             </Flex>
                         </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} bg={"black"} color={"white"}>
+                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
                             Follow
                         </Button>
                     </Flex>
                 </Flex>
+
+                {/* FOOTER PROFILE */}
                 <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"sm"}>
                         <Flex gap={3}>
