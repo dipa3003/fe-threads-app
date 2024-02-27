@@ -6,14 +6,17 @@ import { IoArrowUndo } from "react-icons/io5";
 import { RiImageAddLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { getThreadById } from "../services/thread.services";
-import { IThreadById } from "../interface/threads";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_DETAIL_THREAD } from "../redux/features/detailThreadSlice";
+import { RootState } from "../redux/store";
 
 export default function DetailThread() {
     const [like, setLike] = useState(false);
     const [countLike, setCountLike] = useState<number>(700);
     const [clickLike, setClickLike] = useState(false);
     const [postImg, setPostImg] = useState<string>();
-    const [thread, setThread] = useState<IThreadById | null>(null);
+    const dispatch = useDispatch();
+    const thread = useSelector((state: RootState) => state.detailThread.data);
 
     const {
         state: { threadId },
@@ -25,10 +28,10 @@ export default function DetailThread() {
     useEffect(() => {
         async function fetchThreadData() {
             const dataThread = await getThreadById(Number(threadId));
-            setThread(dataThread);
+            dispatch(GET_DETAIL_THREAD(dataThread));
         }
         fetchThreadData();
-    }, [threadId]);
+    }, [dispatch, threadId]);
 
     function handleLike() {
         setLike(!like);

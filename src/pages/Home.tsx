@@ -1,14 +1,18 @@
 import { Alert, AlertIcon, Avatar, Box, Button, Flex, HStack, Heading, Image, Input, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { IThreads } from "../interface/threads";
+// import { IThreads } from "../interface/threads";
 import CardThread from "../component/cardThread";
 import { RiImageAddLine } from "react-icons/ri";
 import { getThreads, postThread } from "../services/thread.services";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_THREADS } from "../redux/features/threadSlice";
+import { RootState } from "../redux/store";
 
 const Home = () => {
     const navigate = useNavigate();
-    const [threads, setThreads] = useState<IThreads[] | null>(null);
+    const threads = useSelector((state: RootState) => state.threads.data);
+    // const [threads, setThreads] = useState<IThreads[] | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [postImg, setPostImg] = useState<any>();
     const [postAlert, setPostAlert] = useState(false);
@@ -16,6 +20,8 @@ const Home = () => {
     //     content: "",
     //     image: "",
     // });
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -27,10 +33,11 @@ const Home = () => {
 
         async function fetchData() {
             const threadsData = await getThreads();
-            setThreads(threadsData);
+            // setThreads(threadsData);
+            dispatch(GET_THREADS(threadsData));
         }
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     const createThread = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -91,21 +98,20 @@ const Home = () => {
                 )}
 
                 <VStack>
-                    {threads &&
-                        threads.map((thread) => (
-                            <CardThread
-                                key={thread.id}
-                                id={thread.id}
-                                user={thread.user}
-                                username={thread.user.username}
-                                full_name={thread.user.full_name}
-                                created_at={new Date(thread.created_at).toDateString()}
-                                content={thread.content}
-                                image={thread.image}
-                                likes_count={thread.likes_count}
-                                replies_count={thread.replies_count}
-                            />
-                        ))}
+                    {threads.map((thread) => (
+                        <CardThread
+                            key={thread.id}
+                            id={thread.id}
+                            user={thread.user}
+                            username={thread.user.username}
+                            full_name={thread.user.full_name}
+                            created_at={new Date(thread.created_at).toDateString()}
+                            content={thread.content}
+                            image={thread.image}
+                            likes_count={thread.likes_count}
+                            replies_count={thread.replies_count}
+                        />
+                    ))}
                 </VStack>
             </Flex>
             {/* <Box w={"40%"} display={{ base: "none", lg: "block" }}>

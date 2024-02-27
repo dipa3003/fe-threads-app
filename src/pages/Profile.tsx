@@ -1,20 +1,29 @@
 import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { getLoginUser } from "../services/user.services";
+import { getAllUsers, getLoginUser } from "../services/user.services";
 import { IUser } from "../interface/threads";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_ALL_USER } from "../redux/features/allUserSlice";
+import { RootState } from "../redux/store";
 
 const Profile = () => {
     const [user, setUser] = useState<IUser | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const dispatch = useDispatch();
+    const suggestUser = useSelector((state: RootState) => state.allUser.data);
+
     useEffect(() => {
         async function fetchData() {
             const id = localStorage.getItem("userId");
             const userData = await getLoginUser(Number(id));
             setUser(userData);
+
+            const allUser = await getAllUsers();
+            dispatch(GET_ALL_USER(allUser));
         }
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     return (
         <>
@@ -25,7 +34,6 @@ const Profile = () => {
                     <ModalHeader>Edit Profile</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {/* <Text>body modal</Text> */}
                         <Input type="text" placeholder="Username" />
                         <Input type="text" placeholder="Bio" />
                     </ModalBody>
@@ -71,74 +79,26 @@ const Profile = () => {
                     <Heading as={"h3"} size={"md"}>
                         Suggested For You
                     </Heading>
-                    <Flex gap={3} alignItems={"center"} justifyContent={"space-between"}>
-                        <Flex gap={3} alignItems={"center"}>
-                            <Avatar src="/img/paslon.jpg" size={"sm"} />
-                            <Flex flexDir={"column"}>
-                                <Text fontSize={"sm"} fontWeight={"bold"}>
-                                    Jenifer Stewart
-                                </Text>
-                                <Text color={"grey"} fontSize={"xs"}>
-                                    @jenniferr
-                                </Text>
-                            </Flex>
-                        </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray" opacity={"40%"}>
-                            Following
-                        </Button>
-                    </Flex>
-                    <Flex gap={3} alignItems={"center"} justifyContent={"space-between"}>
-                        <Flex gap={3} alignItems={"center"}>
-                            <Avatar src="/img/paslon.jpg" size={"sm"} />
-                            <Flex flexDir={"column"}>
-                                <Text fontSize={"sm"} fontWeight={"bold"}>
-                                    Jenifer Stewart
-                                </Text>
-                                <Text color={"grey"} fontSize={"xs"}>
-                                    @jenniferr
-                                </Text>
+                    {suggestUser.map((user) => (
+                        <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={user.id}>
+                            <Flex gap={3} alignItems={"center"}>
+                                <Avatar src="/img/paslon.jpg" size={"sm"} />
+                                <Flex flexDir={"column"}>
+                                    <Text fontSize={"sm"} fontWeight={"bold"}>
+                                        {user.full_name}
+                                    </Text>
+                                    <Text color={"grey"} fontSize={"xs"}>
+                                        @{user.username}
+                                    </Text>
+                                </Flex>
                             </Flex>
-                        </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
-                            Follow
-                        </Button>
-                    </Flex>
-                    <Flex gap={3} alignItems={"center"} justifyContent={"space-between"}>
-                        <Flex gap={3} alignItems={"center"}>
-                            <Avatar src="/img/paslon.jpg" size={"sm"} />
-                            <Flex flexDir={"column"}>
-                                <Text fontSize={"sm"} fontWeight={"bold"}>
-                                    Jenifer Stewart
-                                </Text>
-                                <Text color={"grey"} fontSize={"xs"}>
-                                    @jenniferr
-                                </Text>
-                            </Flex>
+                            <Button size={"xs"} rounded={"xl"} colorScheme="gray">
+                                Follow
+                            </Button>
                         </Flex>
-
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
-                            Follow
-                        </Button>
-                    </Flex>
-                    <Flex gap={3} alignItems={"center"} justifyContent={"space-between"}>
-                        <Flex gap={3} alignItems={"center"}>
-                            <Avatar src="/img/paslon.jpg" size={"sm"} />
-                            <Flex flexDir={"column"}>
-                                <Text fontSize={"sm"} fontWeight={"bold"}>
-                                    Jenifer Stewart
-                                </Text>
-                                <Text color={"grey"} fontSize={"xs"}>
-                                    @jenniferr
-                                </Text>
-                            </Flex>
-                        </Flex>
-
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
-                            Follow
-                        </Button>
-                    </Flex>
+                    ))}
                 </Flex>
 
                 {/* FOOTER PROFILE */}

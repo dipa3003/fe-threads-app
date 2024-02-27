@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import threadReducer from "../redux/features/threadSlice";
+import detailThreadReducer from "./features/detailThreadSlice";
+import allUserSliceReducer from "./features/allUserSlice";
 
 export const store = configureStore({
     reducer: {
-        GET_THREAD: threadReducer,
+        threads: threadReducer,
+        detailThread: detailThreadReducer,
+        allUser: allUserSliceReducer,
     },
 });
 

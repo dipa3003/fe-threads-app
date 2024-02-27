@@ -10,6 +10,15 @@ export const getLoginUser = async (id: number) => {
     }
 };
 
+export const getAllUsers = async () => {
+    try {
+        const users = await axios.get(`http://localhost:5000/api/users`);
+        return users.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const authRegister = async (data: IRegister, cb: (status: number) => void) => {
     try {
         const response = await axios.post("http://localhost:5000/api/register", data, {
