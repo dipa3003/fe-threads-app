@@ -8,14 +8,12 @@ import { Link, useNavigate } from "react-router-dom";
 const CardThread = (Props: IThreads) => {
     const navigate = useNavigate();
 
-    const [like, setLike] = useState(false);
+    const [isLike, setIsLike] = useState(Props.isLiked);
     const [countLike, setCountLike] = useState<number>(Props.likes_count);
-    const [clickLike, setClickLike] = useState(false);
 
     function handleLike() {
-        setLike(!like);
-        setClickLike(!clickLike);
-        clickLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+        setIsLike(!isLike);
+        isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
     }
 
     const displayThreadCard = (id: number) => {
@@ -43,7 +41,7 @@ const CardThread = (Props: IThreads) => {
 
                 <Flex gap={10} alignItems={"center"}>
                     <Flex gap={2} alignItems={"center"}>
-                        <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
+                        <IconButton onClick={handleLike} colorScheme="inherit" icon={isLike ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
                         <Text>{countLike}</Text>
                     </Flex>
                     <Flex gap={3}>

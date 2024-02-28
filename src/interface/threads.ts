@@ -11,6 +11,7 @@ export interface IThreads {
     image: string;
     likes_count: number;
     replies_count: number;
+    isLiked: boolean;
 }
 export interface IThreadById {
     id: number;
@@ -46,6 +47,8 @@ export interface IUser {
     image: string;
     following_count: number;
     follower_count: number;
+    follower?: [];
+    following?: [];
 }
 
 export interface IThread {

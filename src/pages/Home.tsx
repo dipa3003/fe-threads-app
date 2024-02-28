@@ -1,6 +1,5 @@
-import { Alert, AlertIcon, Avatar, Box, Button, Flex, HStack, Heading, Image, Input, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, HStack, Heading, Image, Input, VStack, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-// import { IThreads } from "../interface/threads";
 import CardThread from "../component/cardThread";
 import { RiImageAddLine } from "react-icons/ri";
 import { getThreads, postThread } from "../services/thread.services";
@@ -12,16 +11,10 @@ import { RootState } from "../redux/store";
 const Home = () => {
     const navigate = useNavigate();
     const threads = useSelector((state: RootState) => state.threads.data);
-    // const [threads, setThreads] = useState<IThreads[] | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [postImg, setPostImg] = useState<any>();
-    const [postAlert, setPostAlert] = useState(false);
-    // const [thread, setThread] = useState({
-    //     content: "",
-    //     image: "",
-    // });
-
     const dispatch = useDispatch();
+    const toast = useToast();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -30,10 +23,10 @@ const Home = () => {
 
     useEffect(() => {
         localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
 
         async function fetchData() {
-            const threadsData = await getThreads();
-            // setThreads(threadsData);
+            const threadsData = await getThreads(Number(userId));
             dispatch(GET_THREADS(threadsData));
         }
         fetchData();
@@ -45,19 +38,22 @@ const Home = () => {
         const image = e.currentTarget.image.files[0];
 
         const dataThread = { content, image };
-        // setThread(dataThread);
+        if (dataThread.content.length == 0 || !dataThread.image)
+            return toast({
+                title: "Failed to post a thread!",
+                description: "Form cannot be empty!.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
 
         const token = localStorage.getItem("token");
         if (token) {
-            if (dataThread.content.length == 0 || dataThread.image.length == 0) return setPostAlert(true);
-
             const res = await postThread(dataThread, token);
             if (res.statusText === "Unauthorized") {
                 localStorage.removeItem("token");
                 navigate("/login");
             }
-
-            console.log("res from server:", res);
 
             if (res.statusText === "Created" || res.status === 201) {
                 window.location.reload();
@@ -90,12 +86,6 @@ const Home = () => {
                     </HStack>
                 </form>
                 {postImg && <Image objectFit={"cover"} ml={20} mt={5} w={200} h={200} src={postImg}></Image>}
-                {postAlert && (
-                    <Alert status="error">
-                        <AlertIcon />
-                        Login field can not be empty!
-                    </Alert>
-                )}
 
                 <VStack>
                     {threads.map((thread) => (
@@ -110,13 +100,11 @@ const Home = () => {
                             image={thread.image}
                             likes_count={thread.likes_count}
                             replies_count={thread.replies_count}
+                            isLiked={thread.isLiked}
                         />
                     ))}
                 </VStack>
             </Flex>
-            {/* <Box w={"40%"} display={{ base: "none", lg: "block" }}>
-                <Profile />
-            </Box> */}
         </Box>
     );
 };

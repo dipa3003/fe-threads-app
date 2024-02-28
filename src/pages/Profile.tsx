@@ -14,6 +14,10 @@ const Profile = () => {
     const suggestUser = useSelector((state: RootState) => state.allUser.data);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         async function fetchData() {
             const id = localStorage.getItem("userId");
             const userData = await getLoginUser(Number(id));

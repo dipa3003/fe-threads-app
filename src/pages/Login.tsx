@@ -15,7 +15,6 @@ const Login = () => {
         const password = e.currentTarget.password.value;
 
         const dataLogin = { username, password };
-        console.log("dataLogin:", dataLogin);
 
         const login = async () => {
             const res = await authLogin(dataLogin, (status, token) => {
@@ -31,10 +30,10 @@ const Login = () => {
                     });
 
                     navigate("/", { replace: true });
+                    window.location.reload();
                 }
             });
             localStorage.setItem("userId", res.user.id);
-            console.log("login_res", res);
         };
         login();
     };
