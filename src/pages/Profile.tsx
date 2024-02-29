@@ -6,12 +6,15 @@ import { IUser } from "../interface/threads";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ALL_USER } from "../redux/features/allUserSlice";
 import { RootState } from "../redux/store";
+import CardSuggestUser from "../component/cardSuggestUser";
 
 const Profile = () => {
     const [user, setUser] = useState<IUser | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
     const suggestUser = useSelector((state: RootState) => state.allUser.data);
+
+    const suggestUserToFollow = suggestUser.filter((value) => value.id !== user?.id);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -28,6 +31,10 @@ const Profile = () => {
         }
         fetchData();
     }, [dispatch]);
+
+    // const handleFollowUser = () => {
+    //     alert("you follow a user");
+    // };
 
     return (
         <>
@@ -56,7 +63,7 @@ const Profile = () => {
                     <Heading as={"h3"} size={"md"}>
                         My Profile
                     </Heading>
-                    <Image src={user?.image ? user?.image : "img/watermelon.png"} objectFit={"cover"} alt="Profile" borderRadius="lg" height={"100"} width={"100%"} />
+                    <Image src={user?.image ? user?.image : ""} fallbackSrc="https://via.placeholder.com/150" objectFit={"cover"} alt="Profile" borderRadius="lg" height={"100"} width={"100%"} />
 
                     <Flex justifyContent={"space-between"}>
                         <Avatar src={user?.image ? user?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} />
@@ -74,7 +81,7 @@ const Profile = () => {
                     <Text fontSize={"sm"}>{user?.bio}</Text>
                     <Flex gap={4} fontSize={"sm"}>
                         <Text>{user?.following_count} following</Text>
-                        <Text>{user?.following_count} following</Text>
+                        <Text>{user?.follower_count} followers</Text>
                     </Flex>
                 </Flex>
 
@@ -84,24 +91,8 @@ const Profile = () => {
                         Suggested For You
                     </Heading>
 
-                    {suggestUser.map((user) => (
-                        <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={user.id}>
-                            <Flex gap={3} alignItems={"center"}>
-                                <Avatar src="/img/paslon.jpg" size={"sm"} />
-                                <Flex flexDir={"column"}>
-                                    <Text fontSize={"sm"} fontWeight={"bold"}>
-                                        {user.full_name}
-                                    </Text>
-                                    <Text color={"grey"} fontSize={"xs"}>
-                                        @{user.username}
-                                    </Text>
-                                </Flex>
-                            </Flex>
-
-                            <Button size={"xs"} rounded={"xl"} colorScheme="gray">
-                                Follow
-                            </Button>
-                        </Flex>
+                    {suggestUserToFollow.map((user) => (
+                        <CardSuggestUser key={user.id} id={user.id} bio={user.bio} username={user.username} full_name={user.full_name} image={user.image} following_count={user.following_count} follower_count={user.follower_count} />
                     ))}
                 </Flex>
 

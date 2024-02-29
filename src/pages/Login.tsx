@@ -30,7 +30,6 @@ const Login = () => {
                     });
 
                     navigate("/", { replace: true });
-                    window.location.reload();
                 }
             });
             localStorage.setItem("userId", res.user.id);
@@ -50,21 +49,7 @@ const Login = () => {
                 <FormControl display={"flex"} flexDir={"column"} gap={6}>
                     <Input placeholder="Username" name="username" />
                     <Input placeholder="Password" name="password" />
-                    <Button
-                        colorScheme="whatsapp"
-                        variant="solid"
-                        w={"full"}
-                        type="submit"
-                        // onClick={() =>
-                        //     toast({
-                        //         title: "Login Success.",
-                        //         description: "You're login to your account.",
-                        //         status: "success",
-                        //         duration: 9000,
-                        //         isClosable: true,
-                        //     })
-                        // }
-                    >
+                    <Button colorScheme="whatsapp" variant="solid" w={"full"} type="submit">
                         Login
                     </Button>
                 </FormControl>

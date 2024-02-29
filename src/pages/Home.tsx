@@ -17,6 +17,9 @@ const Home = () => {
     const toast = useToast();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        // window.location.reload();
+
         const token = localStorage.getItem("token");
         if (!token) navigate("/login");
     }, [navigate]);

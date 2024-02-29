@@ -65,7 +65,7 @@ const Search = () => {
                             </Flex>
                         </Flex>
 
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray">
+                        <Button size={"sm"} rounded={"xl"} colorScheme="gray">
                             Follow
                         </Button>
                     </Flex>
