@@ -22,7 +22,7 @@ const CardThread = (Props: IThreads) => {
 
     return (
         <Flex bg={"whitesmoke"} shadow={"xl"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"} key={Props.id}>
-            <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
+            <Avatar src={Props.user.image} name="profile" size={"sm"} />
 
             <Flex flexDir={"column"} gap={2}>
                 <Flex gap={4} alignItems={"center"}>

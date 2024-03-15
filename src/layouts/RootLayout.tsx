@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../component/Navbar";
 import { Box, Flex } from "@chakra-ui/react";
-import Profile from "../pages/Profile";
+import SidebarProfile from "../pages/SidebarProfile";
 
 const RootLayout = () => {
     return (
@@ -15,7 +15,7 @@ const RootLayout = () => {
             </Box>
 
             <Box w={"40%"} display={{ base: "none", lg: "block" }}>
-                <Profile />
+                <SidebarProfile />
             </Box>
         </Flex>
     );

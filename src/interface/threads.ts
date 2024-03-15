@@ -3,6 +3,7 @@ export interface IThreads {
     user: {
         full_name: string;
         username: string;
+        image: string;
     };
     username: string;
     full_name: string;

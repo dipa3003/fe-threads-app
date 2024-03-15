@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import threadReducer from "../redux/features/threadSlice";
 import detailThreadReducer from "./features/detailThreadSlice";
 import allUserSliceReducer from "./features/allUserSlice";
+import userLoginReducer from "./features/userLoginSlice";
 
 export const store = configureStore({
     reducer: {
         threads: threadReducer,
         detailThread: detailThreadReducer,
         allUser: allUserSliceReducer,
+        userLogin: userLoginReducer,
     },
 });
 

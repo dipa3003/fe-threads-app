@@ -2,12 +2,15 @@ import { Avatar, Button, Flex, Text } from "@chakra-ui/react";
 import { IUser } from "../interface/threads";
 import { postFollow } from "../services/follow.services";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function CardSuggestUser(Props: IUser) {
     const navigate = useNavigate();
+    const [follow, setFollow] = useState<boolean>(false);
 
     const handleFollowUser = async (id: number) => {
         const token = localStorage.getItem("token");
+        setFollow(!follow);
 
         if (token) {
             const resp = await postFollow(id, token);
@@ -24,7 +27,7 @@ export default function CardSuggestUser(Props: IUser) {
     return (
         <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={Props.id}>
             <Flex gap={3} alignItems={"center"}>
-                <Avatar src="/img/paslon.jpg" size={"sm"} />
+                <Avatar src={Props.image} size={"sm"} />
                 <Flex flexDir={"column"}>
                     <Text fontSize={"sm"} fontWeight={"bold"}>
                         {Props.full_name}
@@ -36,7 +39,7 @@ export default function CardSuggestUser(Props: IUser) {
             </Flex>
 
             <Button size={"xs"} rounded={"xl"} colorScheme="gray" onClick={() => handleFollowUser(Props.id)}>
-                Follow
+                {follow ? "UnFollow" : "Follow"}
             </Button>
         </Flex>
     );

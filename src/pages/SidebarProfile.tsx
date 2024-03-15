@@ -1,22 +1,22 @@
 import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
-// import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { getAllUsers, getLoginUser } from "../services/user.services";
 // import { IUser } from "../interface/threads";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ALL_USER } from "../redux/features/allUserSlice";
 import { RootState } from "../redux/store";
-// import CardSuggestUser from "../component/cardSuggestUser";
+import CardSuggestUser from "../component/cardSuggestUser";
 import { GET_LOGIN_USER } from "../redux/features/userLoginSlice";
 
-const Profile = () => {
+const SidebarProfile = () => {
     // const [user, setUser] = useState<IUser | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
-    // const suggestUser = useSelector((state: RootState) => state.allUser.data);
+    const suggestUser = useSelector((state: RootState) => state.allUser.data);
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
 
-    // const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
+    const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -85,7 +85,7 @@ const Profile = () => {
                 </Flex>
 
                 {/* LIST SUGGESTED USER CARD */}
-                {/* <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
+                <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
                         Suggested For You
                     </Heading>
@@ -93,10 +93,10 @@ const Profile = () => {
                     {suggestUserToFollow.map((user) => (
                         <CardSuggestUser key={user.id} id={user.id} bio={user.bio} username={user.username} full_name={user.full_name} image={user.image} following_count={user.following_count} follower_count={user.follower_count} />
                     ))}
-                </Flex> */}
+                </Flex>
 
                 {/* FOOTER PROFILE */}
-                {/* <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
+                <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"sm"}>
                         <Flex gap={3}>
                             Develop by Dipa Galatian • <FaGithub /> <FaLinkedin /> <FaFacebook /> <FaInstagram />
@@ -105,9 +105,9 @@ const Profile = () => {
                     <Text fontSize={"sm"} opacity={"40%"}>
                         Powered by Dumbways Indonesia • #1 Coding Bootcamp
                     </Text>
-                </Flex> */}
+                </Flex>
             </Flex>
         </>
     );
 };
-export default Profile;
+export default SidebarProfile;

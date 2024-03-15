@@ -11,6 +11,8 @@ import { RootState } from "../redux/store";
 const Home = () => {
     const navigate = useNavigate();
     const threads = useSelector((state: RootState) => state.threads.data);
+    const userLogin = useSelector((state: RootState) => state.userLogin.data);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [postImg, setPostImg] = useState<any>();
     const dispatch = useDispatch();
@@ -18,7 +20,6 @@ const Home = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        // window.location.reload();
 
         const token = localStorage.getItem("token");
         if (!token) navigate("/login");
@@ -75,7 +76,7 @@ const Home = () => {
 
                 <form onSubmit={createThread}>
                     <HStack spacing={4} mt={5}>
-                        <Avatar src="/img/paslon.jpg" name="profile" size={"md"} />
+                        <Avatar src={userLogin.image} name="profile" size={"md"} />
                         <Input type="text" placeholder="What is happening?!" border={"none"} name="content" />
                         <Box className="input-image">
                             <Box as={"label"} htmlFor="input-img">
