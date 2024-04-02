@@ -16,7 +16,15 @@ const SidebarProfile = () => {
     const suggestUser = useSelector((state: RootState) => state.allUser.data);
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
 
+    const followings = [];
+    for (const user of userLogin.following!) {
+        // console.log("userFollow:", user.follower.id);
+        followings.push(user.follower.id);
+    }
     const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
+    console.log("followings:", followings);
+    // console.log("followings:", userLogin.following);
+    // console.log("suggestUsers:", suggestUser);
 
     useEffect(() => {
         window.scrollTo(0, 0);

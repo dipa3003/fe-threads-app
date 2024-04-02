@@ -1,12 +1,15 @@
-import { Box, Button, FormControl, Heading, Input, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, Heading, Input, InputGroup, InputRightElement, Text, useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { authLogin } from "../services/user.services";
+import { useState } from "react";
 
 const Login = () => {
     const toast = useToast();
     const navigate = useNavigate();
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    const [show, setShow] = useState(false);
+    const handleClick = () => setShow(!show);
 
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,8 +50,16 @@ const Login = () => {
             </Heading>
             <form onSubmit={handleLogin}>
                 <FormControl display={"flex"} flexDir={"column"} gap={6}>
-                    <Input placeholder="Username" name="username" />
-                    <Input placeholder="Password" name="password" />
+                    <Input placeholder="Username" name="username" id="username" />
+
+                    <InputGroup size="md">
+                        <Input pr="4.5rem" type={show ? "text" : "password"} placeholder="Enter password" name="password" id="password" />
+                        <InputRightElement width="4.5rem">
+                            <Button h="1.75rem" size="sm" onClick={handleClick}>
+                                {show ? "Hide" : "Show"}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
                     <Button colorScheme="whatsapp" variant="solid" w={"full"} type="submit">
                         Login
                     </Button>

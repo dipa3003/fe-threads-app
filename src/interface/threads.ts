@@ -49,7 +49,11 @@ export interface IUser {
     following_count: number;
     follower_count: number;
     follower?: [];
-    following?: [];
+    following?: {
+        follower: {
+            id: number;
+        };
+    }[];
 }
 
 export interface IThread {

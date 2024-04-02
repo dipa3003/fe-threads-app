@@ -4,6 +4,7 @@ import { Avatar, Flex, HStack, Heading, IconButton, Image, Text } from "@chakra-
 import { IThreads } from "../interface/threads";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { postLike } from "../services/like.services";
 
 const CardThread = (Props: IThreads) => {
     const navigate = useNavigate();
@@ -11,13 +12,27 @@ const CardThread = (Props: IThreads) => {
     const [isLike, setIsLike] = useState(Props.isLiked);
     const [countLike, setCountLike] = useState<number>(Props.likes_count);
 
-    function handleLike() {
-        setIsLike(!isLike);
-        isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+    async function handleLike() {
+        try {
+            const token = localStorage.getItem("token");
+            const threadId = Props.id;
+            console.log("threadId:", threadId);
+
+            if (token) {
+                await postLike(threadId, token);
+                setIsLike(!isLike);
+                isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+            } else {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.log("error while post like", error);
+            return error;
+        }
     }
 
-    const displayThreadCard = (id: number) => {
-        navigate("/detail-thread", { state: { threadId: id } });
+    const displayThreadCard = (id: number, isLiked: boolean) => {
+        navigate("/detail-thread", { state: { threadId: id, isLiked } });
     };
 
     return (
@@ -45,7 +60,7 @@ const CardThread = (Props: IThreads) => {
                         <Text>{countLike}</Text>
                     </Flex>
                     <Flex gap={3}>
-                        <HiOutlineChatBubbleBottomCenterText size={25} onClick={() => displayThreadCard(Props.id)} />
+                        <HiOutlineChatBubbleBottomCenterText size={25} onClick={() => displayThreadCard(Props.id, Props.isLiked)} />
                         <Text>{Props.replies_count} Replies</Text>
                     </Flex>
                 </Flex>

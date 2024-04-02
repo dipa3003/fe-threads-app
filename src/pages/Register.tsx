@@ -51,14 +51,14 @@ const Register = () => {
                 </FormControl>
             </form>
 
-            <Text>
+            <Box>
                 Already have an account?{" "}
                 <Link to={"/login"}>
                     <Text display={"inline-block"} color={"green"} fontWeight={"bold"} mt={4}>
                         Login
                     </Text>
                 </Link>
-            </Text>
+            </Box>
         </Box>
     );
 };

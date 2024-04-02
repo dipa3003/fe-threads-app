@@ -3,22 +3,29 @@ import { IUser } from "../interface/threads";
 import { postFollow } from "../services/follow.services";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { getLoginUser } from "../services/user.services";
+import { GET_LOGIN_USER } from "../redux/features/userLoginSlice";
+import { useDispatch } from "react-redux";
 
 export default function CardSuggestUser(Props: IUser) {
     const navigate = useNavigate();
     const [follow, setFollow] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
     const handleFollowUser = async (id: number) => {
         const token = localStorage.getItem("token");
+        const userLoginId = localStorage.getItem("userId");
         setFollow(!follow);
+
+        const userData = await getLoginUser(Number(userLoginId));
+        dispatch(GET_LOGIN_USER(userData));
 
         if (token) {
             const resp = await postFollow(id, token);
-            console.log("response postfollow:", resp);
             if (resp.response.status == 401) {
                 navigate("/login");
             }
-            navigate(0);
+            // navigate(0);
         } else {
             navigate("/login");
         }
