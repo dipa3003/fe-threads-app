@@ -19,6 +19,20 @@ export const getAllUsers = async () => {
     }
 };
 
+export const getSuggestUser = async (token: string) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/suggestUser`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log("responseData:", response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const authRegister = async (data: IRegister, cb: (status: number) => void) => {
     try {
         const response = await axios.post("http://localhost:5000/api/register", data, {

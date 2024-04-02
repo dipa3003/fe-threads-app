@@ -1,30 +1,53 @@
 import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { getAllUsers, getLoginUser } from "../services/user.services";
+import { getAllUsers, getLoginUser, getSuggestUser } from "../services/user.services";
 // import { IUser } from "../interface/threads";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ALL_USER } from "../redux/features/allUserSlice";
 import { RootState } from "../redux/store";
 import CardSuggestUser from "../component/cardSuggestUser";
 import { GET_LOGIN_USER } from "../redux/features/userLoginSlice";
+import { useNavigate } from "react-router-dom";
+import { ISuggestUser } from "../interface/suggestUser";
 
 const SidebarProfile = () => {
     // const [user, setUser] = useState<IUser | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
-    const suggestUser = useSelector((state: RootState) => state.allUser.data);
+    // const suggestUser = useSelector((state: RootState) => state.allUser.data);
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
+    const [suggestUsers, setSuggestUsers] = useState<null | ISuggestUser[]>(null);
 
-    const followings = [];
-    for (const user of userLogin.following!) {
-        // console.log("userFollow:", user.follower.id);
-        followings.push(user.follower.id);
-    }
-    const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
-    console.log("followings:", followings);
-    // console.log("followings:", userLogin.following);
-    // console.log("suggestUsers:", suggestUser);
+    const navigate = useNavigate();
+    // console.log("userLogin:", userLogin);
+
+    // const followings: number[] = [];
+    // for (const user of userLogin.following!) {
+    //     console.log(Number(user.follower.id));
+    //     // followings.push(user.follower.id);
+    // }
+    // const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id && followings.includes(value.id) !== true);
+    // const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
+    // console.log("followings:", followings);
+
+    useEffect(() => {
+        async function getSuggest() {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const allSuggestUser = await getSuggestUser(token);
+                console.log("allSuggestUser:", allSuggestUser);
+
+                if (allSuggestUser.statusText === "Unauthorized") {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
+
+                setSuggestUsers(allSuggestUser);
+            }
+        }
+        getSuggest();
+    }, [navigate]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -34,6 +57,7 @@ const SidebarProfile = () => {
         async function fetchData() {
             const id = localStorage.getItem("userId");
             const userData = await getLoginUser(Number(id));
+            console.log("userDataLogin:", userData);
             dispatch(GET_LOGIN_USER(userData));
             // setUser(userData);
 
@@ -98,9 +122,7 @@ const SidebarProfile = () => {
                         Suggested For You
                     </Heading>
 
-                    {suggestUserToFollow.map((user) => (
-                        <CardSuggestUser key={user.id} id={user.id} bio={user.bio} username={user.username} full_name={user.full_name} image={user.image} following_count={user.following_count} follower_count={user.follower_count} />
-                    ))}
+                    {suggestUsers && suggestUsers.map((user) => <CardSuggestUser key={user.id} id={user.id} bio={user.bio} username={user.username} full_name={user.full_name} image={user.image} />)}
                 </Flex>
 
                 {/* FOOTER PROFILE */}
