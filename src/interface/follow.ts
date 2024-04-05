@@ -1,7 +1,7 @@
 export interface IFollower {
     id: number;
     created_at?: string;
-    follower: {
+    following: {
         id: number;
         full_name: string;
         username: string;
@@ -12,7 +12,7 @@ export interface IFollower {
 export interface IFollowing {
     id: number;
     created_at: string;
-    following: {
+    follower: {
         id: number;
         full_name: string;
         username: string;

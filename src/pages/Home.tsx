@@ -42,10 +42,10 @@ const Home = () => {
         const image = e.currentTarget.image.files[0];
 
         const dataThread = { content, image };
-        if (dataThread.content.length == 0 || !dataThread.image)
+        if (dataThread.content.length == 0 && !dataThread.image)
             return toast({
-                title: "Failed to post a thread!",
-                description: "Form cannot be empty!.",
+                title: "Failed post a thread!",
+                description: "Field cannot be empty!.",
                 status: "error",
                 duration: 3000,
                 isClosable: true,
@@ -54,13 +54,16 @@ const Home = () => {
         const token = localStorage.getItem("token");
         if (token) {
             const res = await postThread(dataThread, token);
-            if (res.statusText === "Unauthorized") {
+            if (res.statusText == "Unauthorized" || res.status == 401) {
                 localStorage.removeItem("token");
                 navigate("/login");
             }
 
             if (res.statusText === "Created" || res.status === 201) {
-                window.location.reload();
+                // window.location.reload();
+                const userId = localStorage.getItem("userId");
+                const threadsData = await getThreads(Number(userId));
+                dispatch(GET_THREADS(threadsData));
             }
         } else {
             navigate("/login");
@@ -75,7 +78,7 @@ const Home = () => {
                 </Heading>
 
                 <form onSubmit={createThread}>
-                    <HStack spacing={4} mt={5}>
+                    <HStack spacing={4} mt={5} mb={10}>
                         <Avatar src={userLogin.image} name="profile" size={"md"} />
                         <Input type="text" placeholder="What is happening?!" border={"none"} name="content" />
                         <Box className="input-image">

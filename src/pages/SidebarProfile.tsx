@@ -2,7 +2,6 @@ import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalClo
 import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { getAllUsers, getLoginUser, getSuggestUser } from "../services/user.services";
-// import { IUser } from "../interface/threads";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ALL_USER } from "../redux/features/allUserSlice";
 import { RootState } from "../redux/store";
@@ -12,31 +11,18 @@ import { useNavigate } from "react-router-dom";
 import { ISuggestUser } from "../interface/suggestUser";
 
 const SidebarProfile = () => {
-    // const [user, setUser] = useState<IUser | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
-    // const suggestUser = useSelector((state: RootState) => state.allUser.data);
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
     const [suggestUsers, setSuggestUsers] = useState<null | ISuggestUser[]>(null);
 
     const navigate = useNavigate();
-    // console.log("userLogin:", userLogin);
-
-    // const followings: number[] = [];
-    // for (const user of userLogin.following!) {
-    //     console.log(Number(user.follower.id));
-    //     // followings.push(user.follower.id);
-    // }
-    // const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id && followings.includes(value.id) !== true);
-    // const suggestUserToFollow = suggestUser.filter((value) => value.id !== userLogin?.id);
-    // console.log("followings:", followings);
 
     useEffect(() => {
         async function getSuggest() {
             const token = localStorage.getItem("token");
             if (token) {
                 const allSuggestUser = await getSuggestUser(token);
-                console.log("allSuggestUser:", allSuggestUser);
 
                 if (allSuggestUser.statusText === "Unauthorized") {
                     localStorage.removeItem("token");
@@ -57,9 +43,7 @@ const SidebarProfile = () => {
         async function fetchData() {
             const id = localStorage.getItem("userId");
             const userData = await getLoginUser(Number(id));
-            console.log("userDataLogin:", userData);
             dispatch(GET_LOGIN_USER(userData));
-            // setUser(userData);
 
             const allUser = await getAllUsers();
             dispatch(GET_ALL_USER(allUser));
@@ -89,16 +73,16 @@ const SidebarProfile = () => {
                 </ModalContent>
             </Modal>
 
-            <Flex position={"sticky"} top={"0"} bg={"white"} p={10} flexDir={"column"} gap={5}>
-                <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
+            <Flex position={"sticky"} top={"0"} p={10} flexDir={"column"} gap={5}>
+                <Flex backgroundImage={"linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
                         My Profile
                     </Heading>
                     <Image src={userLogin?.image ? userLogin?.image : ""} fallbackSrc="https://via.placeholder.com/150" objectFit={"cover"} alt="Profile" borderRadius="lg" height={"100"} width={"100%"} />
 
                     <Flex justifyContent={"space-between"}>
-                        <Avatar src={userLogin?.image ? userLogin?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} />
-                        <Button size={"xs"} rounded={"xl"} colorScheme="gray" onClick={onOpen}>
+                        <Avatar src={userLogin?.image ? userLogin?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} border={"3px solid white"} />
+                        <Button size={"xs"} rounded={"md"} colorScheme="gray" onClick={onOpen}>
                             Edit Profile
                         </Button>
                     </Flex>
@@ -117,7 +101,8 @@ const SidebarProfile = () => {
                 </Flex>
 
                 {/* LIST SUGGESTED USER CARD */}
-                <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
+                {/* <Flex color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4} bg={"linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(133,253,45,1) 100%)"}> */}
+                <Flex color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4} backgroundImage={"linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"}>
                     <Heading as={"h3"} size={"md"}>
                         Suggested For You
                     </Heading>
@@ -126,7 +111,7 @@ const SidebarProfile = () => {
                 </Flex>
 
                 {/* FOOTER PROFILE */}
-                <Flex bg={"whitesmoke"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
+                <Flex color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4} backgroundImage={"linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"}>
                     <Heading as={"h3"} size={"sm"}>
                         <Flex gap={3}>
                             Develop by Dipa Galatian • <FaGithub /> <FaLinkedin /> <FaFacebook /> <FaInstagram />

@@ -3,7 +3,7 @@ export interface IThreads {
     user: {
         full_name: string;
         username: string;
-        image: string;
+        image?: string;
     };
     username: string;
     full_name: string;
@@ -15,8 +15,10 @@ export interface IThreads {
     isLiked: boolean;
 }
 export interface IThreadById {
+    isLiked: boolean;
     id: number;
     user: {
+        image: string | undefined;
         full_name: string;
         username: string;
     };
@@ -31,6 +33,7 @@ export interface IThreadById {
         created_at: string;
         image: string;
         user: {
+            image: string | undefined;
             id: number;
             username: string;
             full_name: string;
@@ -57,6 +60,6 @@ export interface IUser {
 }
 
 export interface IThread {
-    content: string;
-    image: string;
+    content?: string;
+    image?: string;
 }

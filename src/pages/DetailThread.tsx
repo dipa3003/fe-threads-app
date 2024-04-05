@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_DETAIL_THREAD } from "../redux/features/detailThreadSlice";
 import { RootState } from "../redux/store";
 import { postReply } from "../services/reply.services";
+import CardThread from "../component/cardThread";
+import { timeAgo } from "../utils/timeConverter";
 
 export default function DetailThread() {
     const {
@@ -22,6 +24,7 @@ export default function DetailThread() {
     const dispatch = useDispatch();
     const thread = useSelector((state: RootState) => state.detailThread.data);
     const navigate = useNavigate();
+    const userLogin = useSelector((state: RootState) => state.userLogin.data);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -40,16 +43,12 @@ export default function DetailThread() {
         setClickLike(!clickLike);
         clickLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function parseDate(date: any) {
-        return new Date(date).toDateString();
-    }
+
     async function handlePostReply(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const content = e.currentTarget.content.value;
         const image = e.currentTarget.image.files[0];
-        console.log("image:", image);
 
         const dataReply = { content, image, threadId };
 
@@ -90,7 +89,7 @@ export default function DetailThread() {
                 </Flex> */}
 
                 {/* CARD THREAD */}
-                <Flex bg={"whitesmoke"} shadow={"lg"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"}>
+                {/* <Flex bg={"whitesmoke"} shadow={"lg"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"}>
                     <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
 
                     <Flex flexDir={"column"} gap={2}>
@@ -119,14 +118,27 @@ export default function DetailThread() {
                             </Flex>
                         </Flex>
                     </Flex>
-                </Flex>
+                </Flex> */}
+
+                {/* NEW CARD */}
+                <CardThread
+                    key={thread.id}
+                    id={thread.id}
+                    user={thread.user}
+                    username={thread.user.username}
+                    full_name={thread.user.full_name}
+                    created_at={new Date(thread.created_at).toDateString()}
+                    content={thread.content}
+                    image={thread.image}
+                    likes_count={thread.likes_count}
+                    replies_count={thread.replies_count}
+                    isLiked={thread.isLiked}
+                />
 
                 {/* INPUT REPLY */}
                 <form onSubmit={handlePostReply}>
                     <HStack spacing={4} mt={5} mb={10}>
-                        <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
-                        {/* <FormControl>
-                        </FormControl> */}
+                        <Avatar src={userLogin.image} name={userLogin.full_name} size={"sm"} />
                         <Input name="content" type="text" placeholder="Type your reply here..." border={"none"} />
                         <Box className="input-image">
                             <Box as={"label"} htmlFor="input-img">
@@ -146,7 +158,7 @@ export default function DetailThread() {
                 {thread?.replies &&
                     thread.replies.map((reply) => (
                         <Flex bg={"whitesmoke"} p={5} w={"100%"} gap={4} mt={2} borderRadius={"lg"} key={reply.id}>
-                            <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
+                            <Avatar src={reply.user.image} name={reply.user.full_name} size={"sm"} />
 
                             <Flex flexDir={"column"} gap={2}>
                                 <Flex gap={4} alignItems={"center"}>
@@ -157,7 +169,8 @@ export default function DetailThread() {
                                         <Link to={"/username"}>
                                             <Text fontWeight={"light"}>@{reply.user.username}</Text>
                                         </Link>
-                                        <Text> • {new Date(reply.created_at).toDateString()}</Text>
+                                        {/* <Text> • {new Date(reply.created_at).toDateString()}</Text> */}
+                                        <Text> • {timeAgo(new Date(reply.created_at).toDateString())}</Text>
                                     </HStack>
                                 </Flex>
                                 <Text>{reply?.content}</Text>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IAuth, IRegister } from "../interface/auth";
+import { IUpdateUser } from "../interface/user";
 
 export const getLoginUser = async (id: number) => {
     try {
@@ -26,10 +27,24 @@ export const getSuggestUser = async (token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("responseData:", response.data);
         return response.data;
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const updateProfile = async (token: string, data: IUpdateUser) => {
+    try {
+        const response = await axios.patch(`http://localhost:5000/users`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/formdata",
+            },
+        });
+
+        return response;
+    } catch (error) {
+        console.log("error updateProfile:", error);
     }
 };
 

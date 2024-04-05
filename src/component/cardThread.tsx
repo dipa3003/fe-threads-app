@@ -1,10 +1,11 @@
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { HiOutlineChatBubbleBottomCenterText } from "react-icons/hi2";
-import { Avatar, Flex, HStack, Heading, IconButton, Image, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { IThreads } from "../interface/threads";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { postLike } from "../services/like.services";
+import { timeAgo } from "../utils/timeConverter";
 
 const CardThread = (Props: IThreads) => {
     const navigate = useNavigate();
@@ -16,7 +17,6 @@ const CardThread = (Props: IThreads) => {
         try {
             const token = localStorage.getItem("token");
             const threadId = Props.id;
-            console.log("threadId:", threadId);
 
             if (token) {
                 await postLike(threadId, token);
@@ -36,35 +36,50 @@ const CardThread = (Props: IThreads) => {
     };
 
     return (
-        <Flex bg={"whitesmoke"} shadow={"xl"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"} key={Props.id}>
-            <Avatar src={Props.user.image} name="profile" size={"sm"} />
+        <Flex bg={"whitesmoke"} shadow="lg" mt={6} borderRadius={"lg"} key={Props.id}>
+            <Card w="2xl">
+                <CardHeader background={"whitesmoke"} py={3}>
+                    <Flex>
+                        <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                            <Avatar src={Props.user.image} name={Props.user.full_name} />
 
-            <Flex flexDir={"column"} gap={2}>
-                <Flex gap={4} alignItems={"center"}>
-                    <Heading as={"h5"} size={"sm"}>
-                        {Props.user.full_name}
-                    </Heading>
-                    <HStack>
-                        <Link to={"/username"}>
-                            <Text fontWeight={"light"}>@{Props.user.username}</Text>
-                        </Link>
-                        <Text> • {Props.created_at}</Text>
-                    </HStack>
-                </Flex>
-                <Text>{Props.content}</Text>
-                {Props.image && <Image src={Props.image} objectFit={"cover"} boxSize="xs" my={5} />}
+                            <Box>
+                                <Heading size="sm">{Props.user.full_name}</Heading>
+                            </Box>
+                            <Text>@{Props.user.username}</Text>
+                            <Text>{timeAgo(Props.created_at)}</Text>
+                        </Flex>
+                    </Flex>
+                </CardHeader>
+                <CardBody>
+                    <Text>{Props.content}</Text>
+                    {Props.image && <Image src={Props.image} objectFit="cover" w={"100%"} mt={3} />}
+                </CardBody>
 
-                <Flex gap={10} alignItems={"center"}>
-                    <Flex gap={2} alignItems={"center"}>
-                        <IconButton onClick={handleLike} colorScheme="inherit" icon={isLike ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
-                        <Text>{countLike}</Text>
+                <CardFooter
+                    justify="space-between"
+                    flexWrap="wrap"
+                    sx={{
+                        "& > button": {
+                            minW: "136px",
+                        },
+                    }}
+                >
+                    <Flex flex="1" alignItems={"center"} onClick={handleLike}>
+                        <Button flex="1" variant="ghost" leftIcon={isLike ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />}>
+                            <Text>{countLike} Likes</Text>
+                        </Button>
                     </Flex>
-                    <Flex gap={3}>
-                        <HiOutlineChatBubbleBottomCenterText size={25} onClick={() => displayThreadCard(Props.id, Props.isLiked)} />
-                        <Text>{Props.replies_count} Replies</Text>
+                    <Flex flex="1" onClick={() => displayThreadCard(Props.id, Props.isLiked)}>
+                        <Button flex="1" variant="ghost" leftIcon={<HiOutlineChatBubbleBottomCenterText size={25} />}>
+                            <Text>{Props.replies_count} Replies</Text>
+                        </Button>
                     </Flex>
-                </Flex>
-            </Flex>
+                    {/* <Button flex="1" variant="ghost" leftIcon={isLike ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />}>
+                        Share
+                    </Button> */}
+                </CardFooter>
+            </Card>
         </Flex>
     );
 };

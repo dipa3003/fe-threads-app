@@ -1,5 +1,4 @@
 import { Avatar, Button, Flex, Text } from "@chakra-ui/react";
-// import { IUser } from "../interface/threads";
 import { postFollow } from "../services/follow.services";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -33,7 +32,7 @@ export default function CardSuggestUser(Props: ISuggestUser) {
     };
 
     return (
-        <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={Props.id}>
+        <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={Props.id} border={"1px solid white"} borderRadius={"xl"} py={1} px={2}>
             <Flex gap={3} alignItems={"center"}>
                 <Avatar src={Props.image} size={"sm"} />
                 <Flex flexDir={"column"}>

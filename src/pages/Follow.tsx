@@ -1,7 +1,5 @@
 import { Avatar, Button, Flex, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../redux/store";
 import { getFollows } from "../services/follow.services";
 import { IFollower, IFollowing } from "../interface/follow";
 
@@ -12,8 +10,6 @@ const Follow = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    // const users = useSelector((state: RootState) => state.allUser.data);
 
     useEffect(() => {
         async function fetchFollow() {
@@ -47,10 +43,11 @@ const Follow = () => {
                                         <Avatar src="/img/paslon.jpg" size={"sm"} />
                                         <Flex flexDir={"column"}>
                                             <Text fontSize={"sm"} fontWeight={"bold"}>
-                                                {item.follower.full_name}
+                                                {/* {item.follower.full_name} */}
+                                                {item.following.full_name}
                                             </Text>
                                             <Text color={"grey"} fontSize={"xs"}>
-                                                @{item.follower.username}
+                                                @{item.following.username}
                                             </Text>
                                         </Flex>
                                     </Flex>
@@ -71,10 +68,10 @@ const Follow = () => {
                                         <Avatar src="/img/paslon.jpg" size={"sm"} />
                                         <Flex flexDir={"column"}>
                                             <Text fontSize={"sm"} fontWeight={"bold"}>
-                                                {item.following.full_name}
+                                                {item.follower.full_name}
                                             </Text>
                                             <Text color={"grey"} fontSize={"xs"}>
-                                                @{item.following.username}
+                                                @{item.follower.username}
                                             </Text>
                                         </Flex>
                                     </Flex>

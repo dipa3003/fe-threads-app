@@ -20,6 +20,16 @@ export const getThreadById = async (id: number) => {
     }
 };
 
+export const getThreadsByUser = async (id: number) => {
+    try {
+        const threads = await axios.get(`http://localhost:5000/api/threadsByUser/${id}`);
+
+        return threads.data;
+    } catch (error) {
+        console.log("error getThreadsByUser:", error);
+    }
+};
+
 export const postThread = async (data: IThread, token: string) => {
     try {
         const response = await axios.post(`http://localhost:5000/api/threads/add`, data, {
