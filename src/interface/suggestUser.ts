@@ -4,6 +4,5 @@ export interface ISuggestUser {
     full_name?: string;
     id: number;
     image?: string;
-
     username: string;
 }

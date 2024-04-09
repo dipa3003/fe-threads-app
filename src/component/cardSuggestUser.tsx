@@ -13,22 +13,27 @@ export default function CardSuggestUser(Props: ISuggestUser) {
     const dispatch = useDispatch();
 
     const handleFollowUser = async (id: number) => {
-        const token = localStorage.getItem("token");
-        const userLoginId = localStorage.getItem("userId");
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
+        // const token = localStorage.getItem("token");
+        // const userLoginId = localStorage.getItem("userId");
         setFollow(!follow);
 
-        const userData = await getLoginUser(Number(userLoginId));
+        const userData = await getLoginUser(Number(item.userId));
         dispatch(GET_LOGIN_USER(userData));
 
-        if (token) {
-            const resp = await postFollow(id, token);
-            if (resp.response.status == 401) {
-                navigate("/login");
-            }
-            // navigate(0);
-        } else {
+        // if (token) {
+        const resp = await postFollow(id, item.token);
+        if (resp.response.status == 401) {
             navigate("/login");
         }
+        // navigate(0);
+        // } else {
+        //     navigate("/login");
+        // }
     };
 
     return (

@@ -3,11 +3,10 @@ import { CgProfile } from "react-icons/cg";
 import { GoHeart, GoHome } from "react-icons/go";
 import { RiLogoutCircleLine, RiUserSearchLine } from "react-icons/ri";
 import { NavLink, Link } from "react-router-dom";
+import "./navbar.css";
 
 const Navbar = () => {
     return (
-        // Set Responsive in Box container
-        // <Box display={{ base: "none", md: "block" }}>
         <Flex position={"sticky"} top={"0"} as="nav" w={{ base: "0", md: "25%", lg: "100%" }} p={10} flexDir={"column"} gap={8} minH={"100vh"}>
             <Link to={"/"}>
                 <Heading as="h1" color={"lime"}>
@@ -50,13 +49,12 @@ const Navbar = () => {
             </Link>
 
             <Link to={"/login"}>
-                <Flex flexDir={"row"} alignItems={"center"} gap={2} mt={"100%"} color={"black"}>
+                <Flex flexDir={"row"} alignItems={"center"} gap={2} mt="200" color={"black"} bgColor={"whitesmoke"} borderRadius={6}>
                     <RiLogoutCircleLine />
                     Logout
                 </Flex>
             </Link>
         </Flex>
-        // </Box>
     );
 };
 export default Navbar;

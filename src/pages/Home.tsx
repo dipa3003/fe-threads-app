@@ -42,8 +42,10 @@ const Home = () => {
         // const userId = localStorage.getItem("userId");
 
         async function fetchData() {
-            const threadsData = await getThreads(Number(item.userId));
-            dispatch(GET_THREADS(threadsData));
+            if (item.userId) {
+                const threadsData = await getThreads(Number(item.userId));
+                dispatch(GET_THREADS(threadsData));
+            }
         }
         fetchData();
     }, [dispatch]);
@@ -54,7 +56,6 @@ const Home = () => {
         const image = e.currentTarget.image.files[0];
 
         const dataThread = { content, image };
-        console.log("dataThread:", dataThread);
         if (dataThread.content.length == 0 && !dataThread.image)
             return toast({
                 title: "Failed post a thread!",

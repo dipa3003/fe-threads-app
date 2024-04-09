@@ -9,14 +9,9 @@ const Follow = () => {
     const itemStr = localStorage.getItem("item");
     const item = JSON.parse(itemStr!);
 
-    // useEffect(() => {
-    // }, []);
-
     useEffect(() => {
         window.scrollTo(0, 0);
         async function fetchFollow() {
-            // const userId = localStorage.getItem("userId");
-
             const response = await getFollows(Number(item.userId));
             setFollower(response.follower);
             setFollowing(response.following);
@@ -32,7 +27,7 @@ const Follow = () => {
             <Tabs isFitted variant="enclosed" mt={5}>
                 <TabList mb="1em">
                     <Tab>Followers</Tab>
-                    <Tab>Following</Tab>
+                    <Tab>Followings</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel display={"flex"} gap={5} flexDir={"column"}>
@@ -42,10 +37,9 @@ const Follow = () => {
                             follower.map((item) => (
                                 <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={item.id}>
                                     <Flex gap={3} alignItems={"center"}>
-                                        <Avatar src="/img/paslon.jpg" size={"sm"} />
+                                        <Avatar src={item.following.image} size={"sm"} />
                                         <Flex flexDir={"column"}>
                                             <Text fontSize={"sm"} fontWeight={"bold"}>
-                                                {/* {item.follower.full_name} */}
                                                 {item.following.full_name}
                                             </Text>
                                             <Text color={"grey"} fontSize={"xs"}>
@@ -67,7 +61,7 @@ const Follow = () => {
                             following.map((item) => (
                                 <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={item.id}>
                                     <Flex gap={3} alignItems={"center"}>
-                                        <Avatar src="/img/paslon.jpg" size={"sm"} />
+                                        <Avatar src={item.follower.image} size={"sm"} />
                                         <Flex flexDir={"column"}>
                                             <Text fontSize={"sm"} fontWeight={"bold"}>
                                                 {item.follower.full_name}

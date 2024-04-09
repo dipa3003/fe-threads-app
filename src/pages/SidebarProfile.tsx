@@ -15,7 +15,6 @@ const SidebarProfile = () => {
     const dispatch = useDispatch();
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
     const [suggestUsers, setSuggestUsers] = useState<null | ISuggestUser[]>(null);
-
     const navigate = useNavigate();
 
     useEffect(() => {

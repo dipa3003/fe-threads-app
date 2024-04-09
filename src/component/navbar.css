@@ -1,0 +1,5 @@
+nav .active {
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+    border-radius: 8px;
+    padding: 5px 8px;
+}
