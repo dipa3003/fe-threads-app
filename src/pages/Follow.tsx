@@ -6,21 +6,23 @@ import { IFollower, IFollowing } from "../interface/follow";
 const Follow = () => {
     const [follower, setFollower] = useState<IFollower[] | null>(null);
     const [following, setFollowing] = useState<IFollowing[] | null>(null);
+    const itemStr = localStorage.getItem("item");
+    const item = JSON.parse(itemStr!);
+
+    // useEffect(() => {
+    // }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
         async function fetchFollow() {
-            const userId = localStorage.getItem("userId");
+            // const userId = localStorage.getItem("userId");
 
-            const response = await getFollows(Number(userId));
+            const response = await getFollows(Number(item.userId));
             setFollower(response.follower);
             setFollowing(response.following);
         }
         fetchFollow();
-    }, []);
+    }, [item.userId]);
 
     return (
         <Flex w={{ base: "100%", md: "100%" }} color={"black"} border={"2px"} borderColor={"whitesmoke"} p={10} flexDir={"column"}>

@@ -1,17 +1,19 @@
 import { Box, Button, FormControl, Heading, Input, InputGroup, InputRightElement, Text, useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { authLogin } from "../services/user.services";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Login = () => {
     const toast = useToast();
     const navigate = useNavigate();
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        localStorage.removeItem("item");
+    }, []);
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const username = e.currentTarget.username.value;
@@ -19,25 +21,63 @@ const Login = () => {
 
         const dataLogin = { username, password };
 
-        const login = async () => {
-            const res = await authLogin(dataLogin, (status, token) => {
-                if (status === 200) {
-                    localStorage.setItem("token", token);
-
-                    toast({
-                        title: "Login success.",
-                        description: "Welcome back to your account.",
-                        status: "success",
-                        duration: 3000,
-                        isClosable: true,
-                    });
-
-                    navigate("/", { replace: true });
-                }
+        // const login = async () => {
+        const res = await authLogin(dataLogin);
+        if (!res.token && res.response.status == 400) {
+            return toast({
+                title: res.response.data.message,
+                description: "Cannot login",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
             });
-            localStorage.setItem("userId", res.user.id);
+        }
+        const item = {
+            token: res.token,
+            userId: res.user.id,
+            expiry: new Date().getTime() + 60 * 60 * 1000 * 3,
         };
-        login();
+        localStorage.setItem("item", JSON.stringify(item));
+
+        toast({
+            title: "Login success.",
+            description: "Welcome back to your account.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+        });
+
+        navigate("/", { replace: true });
+        // localStorage.setItem("userId", res.user.id);
+
+        // };
+        // login();
+        // // const login = async () => {
+        // const res = await authLogin(dataLogin, (status, token) => {
+        //     console.log("res:", res);
+        //     console.log("status:", status);
+        //     if (status == 200) {
+        //         const item = {
+        //             token: token,
+        //             // userId: res.user.id,
+        //             expiry: new Date().getTime() + 60 * 60 * 1000 * 3,
+        //         };
+        //         localStorage.setItem("item", JSON.stringify(item));
+
+        //         toast({
+        //             title: "Login success.",
+        //             description: "Welcome back to your account.",
+        //             status: "success",
+        //             duration: 3000,
+        //             isClosable: true,
+        //         });
+
+        //         navigate("/", { replace: true });
+        //         // localStorage.setItem("userId", res.user.id);
+        //     }
+        // });
+        // // };
+        // // login();
     };
 
     return (

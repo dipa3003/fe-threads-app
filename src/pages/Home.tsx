@@ -21,16 +21,28 @@ const Home = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        const token = localStorage.getItem("token");
-        if (!token) navigate("/login");
+        // const token = localStorage.getItem("token");
+        // if (!token) navigate("/login");
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
+
+        if (new Date().getTime() > item.expiry) {
+            localStorage.removeItem("item");
+            navigate("/login");
+        }
     }, [navigate]);
 
     useEffect(() => {
-        localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        const itemStr = localStorage.getItem("item");
+        const item = JSON.parse(itemStr!);
+        // localStorage.getItem("token");
+        // const userId = localStorage.getItem("userId");
 
         async function fetchData() {
-            const threadsData = await getThreads(Number(userId));
+            const threadsData = await getThreads(Number(item.userId));
             dispatch(GET_THREADS(threadsData));
         }
         fetchData();
@@ -42,6 +54,7 @@ const Home = () => {
         const image = e.currentTarget.image.files[0];
 
         const dataThread = { content, image };
+        console.log("dataThread:", dataThread);
         if (dataThread.content.length == 0 && !dataThread.image)
             return toast({
                 title: "Failed post a thread!",
@@ -51,9 +64,12 @@ const Home = () => {
                 isClosable: true,
             });
 
-        const token = localStorage.getItem("token");
-        if (token) {
-            const res = await postThread(dataThread, token);
+        const itemStr = localStorage.getItem("item");
+        const item = JSON.parse(itemStr!);
+
+        // const token = localStorage.getItem("token");
+        if (item.token) {
+            const res = await postThread(dataThread, item.token);
             if (res.statusText == "Unauthorized" || res.status == 401) {
                 localStorage.removeItem("token");
                 navigate("/login");
@@ -65,9 +81,10 @@ const Home = () => {
                 const threadsData = await getThreads(Number(userId));
                 dispatch(GET_THREADS(threadsData));
             }
-        } else {
-            navigate("/login");
         }
+        // else {
+        //     navigate("/login");
+        // }
     };
 
     return (

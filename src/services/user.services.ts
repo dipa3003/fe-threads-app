@@ -35,10 +35,10 @@ export const getSuggestUser = async (token: string) => {
 
 export const updateProfile = async (token: string, data: IUpdateUser) => {
     try {
-        const response = await axios.patch(`http://localhost:5000/users`, data, {
+        const response = await axios.patch(`http://localhost:5000/api/users`, data, {
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/formdata",
+                "Content-Type": "multipart/form-data",
             },
         });
 
@@ -63,16 +63,30 @@ export const authRegister = async (data: IRegister, cb: (status: number) => void
     }
 };
 
-export const authLogin = async (data: IAuth, cb: (status: number, token: string) => void) => {
+export const authLogin = async (data: IAuth) => {
     try {
         const response = await axios.post("http://localhost:5000/api/login", data, {
             headers: {
                 "Content-Type": "application/json",
             },
         });
-        cb(response.status, response.data.token);
+        // cb(response.status, response.data.token);
         return response.data;
     } catch (error) {
         console.log(error);
+        return error;
     }
 };
+// export const authLogin = async (data: IAuth, cb: (status: number, token: string) => void) => {
+//     try {
+//         const response = await axios.post("http://localhost:5000/api/login", data, {
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//         });
+//         cb(response.status, response.data.token);
+//         return response.data;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };

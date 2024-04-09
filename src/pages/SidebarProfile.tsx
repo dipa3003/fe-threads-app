@@ -19,37 +19,60 @@ const SidebarProfile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function getSuggest() {
-            const token = localStorage.getItem("token");
-            if (token) {
-                const allSuggestUser = await getSuggestUser(token);
-
-                if (allSuggestUser.statusText === "Unauthorized") {
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }
-
-                setSuggestUsers(allSuggestUser);
-            }
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
         }
-        getSuggest();
-    }, [navigate]);
+        const item = JSON.parse(itemStr!);
+        // if (item.expiry == null) navigate("/login");
 
-    useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
 
-    useEffect(() => {
         async function fetchData() {
-            const id = localStorage.getItem("userId");
-            const userData = await getLoginUser(Number(id));
+            // const itemStr = localStorage.getItem("item");
+            // const item = JSON.parse(itemStr!);
+
+            // if (new Date().getTime() > item.expiry) {
+            //     localStorage.removeItem("item");
+            //     navigate("/login");
+            // }
+
+            // if (token) {
+            const allSuggestUser = await getSuggestUser(item.token);
+
+            // if (allSuggestUser.status == 401) {
+            //     localStorage.removeItem("item");
+            //     navigate("/login");
+            // }
+
+            setSuggestUsers(allSuggestUser);
+            // }
+            const userData = await getLoginUser(Number(item.userId));
             dispatch(GET_LOGIN_USER(userData));
 
             const allUser = await getAllUsers();
             dispatch(GET_ALL_USER(allUser));
         }
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, navigate]);
+
+    // useEffect(() => {
+    //     window.scrollTo(0, 0);
+    // }, []);
+
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         // const itemStr = localStorage.getItem("item");
+    //         // const item = JSON.parse(itemStr!);
+    //         // const id = localStorage.getItem("userId");
+    //         const userData = await getLoginUser(Number(item.userId));
+    //         dispatch(GET_LOGIN_USER(userData));
+
+    //         const allUser = await getAllUsers();
+    //         dispatch(GET_ALL_USER(allUser));
+    //     }
+    //     fetchData();
+    // }, [dispatch]);
 
     return (
         <>
