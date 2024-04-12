@@ -43,22 +43,6 @@ export interface IThreadById {
     replies_count: number;
 }
 
-export interface IUser {
-    id: number;
-    bio: string;
-    username: string;
-    full_name: string;
-    image: string;
-    following_count: number;
-    follower_count: number;
-    follower?: [];
-    following?: {
-        follower: {
-            id: number;
-        };
-    }[];
-}
-
 export interface IThread {
     content?: string;
     image?: string;

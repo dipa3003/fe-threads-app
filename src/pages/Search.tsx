@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Input, InputGroup, InputLeftElement, Text, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { RiUserSearchLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
@@ -35,13 +35,16 @@ const Search = () => {
 
     return (
         <Flex w={{ base: "100%", md: "100%" }} color={"black"} border={"2px"} borderColor={"whitesmoke"} p={10} flexDir={"column"}>
+            <Heading as={"h3"} size={"md"}>
+                Search People
+            </Heading>
             <form onSubmit={handleSearchUser}>
-                <Flex>
+                <Flex mt="5">
                     <InputGroup mb={8}>
                         <InputLeftElement pointerEvents="none">
                             <RiUserSearchLine />
                         </InputLeftElement>
-                        <Input type="text" name="username" placeholder="Search User..." />
+                        <Input type="text" name="username" placeholder="Search by username" />
                     </InputGroup>
                     <Button colorScheme="teal" size="md" px={5} type="submit">
                         Search

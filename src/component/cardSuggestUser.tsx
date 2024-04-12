@@ -1,15 +1,16 @@
 import { Avatar, Button, Flex, Text } from "@chakra-ui/react";
-import { postFollow } from "../services/follow.services";
+import { getFollows, postFollow } from "../services/follow.services";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { ISuggestUser } from "../interface/suggestUser";
 import { getLoginUser } from "../services/user.services";
 import { GET_LOGIN_USER } from "../redux/features/userLoginSlice";
 import { useDispatch } from "react-redux";
-import { ISuggestUser } from "../interface/suggestUser";
+import { GET_FOLLOWINGS } from "../redux/features/followingSlice";
 
 export default function CardSuggestUser(Props: ISuggestUser) {
-    const navigate = useNavigate();
     const [follow, setFollow] = useState<boolean>(false);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleFollowUser = async (id: number) => {
@@ -18,22 +19,15 @@ export default function CardSuggestUser(Props: ISuggestUser) {
             return navigate("/login");
         }
         const item = JSON.parse(itemStr!);
-        // const token = localStorage.getItem("token");
-        // const userLoginId = localStorage.getItem("userId");
         setFollow(!follow);
-
-        const userData = await getLoginUser(Number(item.userId));
-        dispatch(GET_LOGIN_USER(userData));
-
-        // if (token) {
         const resp = await postFollow(id, item.token);
         if (resp.response.status == 401) {
             navigate("/login");
         }
-        // navigate(0);
-        // } else {
-        //     navigate("/login");
-        // }
+        const userData = await getLoginUser(Number(item.userId));
+        dispatch(GET_LOGIN_USER(userData));
+        const response = await getFollows(Number(item.userId));
+        dispatch(GET_FOLLOWINGS(response.following));
     };
 
     return (

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../../interface/threads";
+import { IUser } from "../../interface/user";
 
 const data: IUser = {
     id: 0,

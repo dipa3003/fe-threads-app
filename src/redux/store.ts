@@ -3,6 +3,7 @@ import threadReducer from "../redux/features/threadSlice";
 import detailThreadReducer from "./features/detailThreadSlice";
 import allUserSliceReducer from "./features/allUserSlice";
 import userLoginReducer from "./features/userLoginSlice";
+import followingReducer from "./features/followingSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         detailThread: detailThreadReducer,
         allUser: allUserSliceReducer,
         userLogin: userLoginReducer,
+        following: followingReducer,
     },
 });
 

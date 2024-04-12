@@ -15,20 +15,21 @@ const Profile = () => {
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
     const [threads, setThreads] = useState<null | IThreads[]>(null);
     const navigate = useNavigate();
-    const itemStr = localStorage.getItem("item");
-    const item = JSON.parse(itemStr!);
-
-    // useEffect(() => {
-    // }, []);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
+
         if (new Date().getTime() > item.expiry) {
             localStorage.removeItem("item");
             navigate("/login");
         }
-        window.scrollTo(0, 0);
         async function fetchData() {
-            // const id = localStorage.getItem("userId");
             const userData = await getLoginUser(Number(item.userId));
             dispatch(GET_LOGIN_USER(userData));
 
@@ -36,7 +37,7 @@ const Profile = () => {
             setThreads(threadsByUserLogin);
         }
         fetchData();
-    }, [dispatch, item.expiry, item.userId, navigate]);
+    }, [dispatch, navigate]);
 
     const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,16 +53,13 @@ const Profile = () => {
             image,
         };
 
-        console.log("data profile:", dataUser);
-
-        // const token = localStorage.getItem("token");
-        // if (token) {
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
         const res = await updateProfile(item.token, dataUser);
         console.log(res?.statusText);
-        // }
-        // else {
-        //     navigate("/login");
-        // }
     };
 
     return (

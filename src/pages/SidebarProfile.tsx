@@ -109,7 +109,7 @@ const SidebarProfile = () => {
                         </Button>
                     </Flex>
                     <Heading size="md">
-                        {userLogin?.full_name}{" "}
+                        {userLogin?.full_name} 👀
                         <Text fontSize={"sm"} color={"grey"} textColor={"gray"} fontWeight="light">
                             @ {userLogin?.username}
                         </Text>
@@ -117,7 +117,7 @@ const SidebarProfile = () => {
 
                     <Text fontSize={"sm"}>{userLogin?.bio}</Text>
                     <Flex gap={4} fontSize={"sm"}>
-                        <Text>{userLogin?.following_count} following</Text>
+                        <Text>{userLogin?.following_count} followings</Text>
                         <Text>{userLogin?.follower_count} followers</Text>
                     </Flex>
                 </Flex>

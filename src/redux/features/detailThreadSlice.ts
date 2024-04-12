@@ -6,6 +6,7 @@ const data: IThreadById = {
     user: {
         full_name: "",
         username: "",
+        image: "",
     },
     username: "",
     full_name: "",
@@ -15,6 +16,7 @@ const data: IThreadById = {
     replies: [],
     likes_count: 0,
     replies_count: 0,
+    isLiked: false,
 };
 const initialState = {
     data,

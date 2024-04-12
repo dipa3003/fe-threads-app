@@ -33,14 +33,6 @@ const Home = () => {
             localStorage.removeItem("item");
             navigate("/login");
         }
-    }, [navigate]);
-
-    useEffect(() => {
-        const itemStr = localStorage.getItem("item");
-        const item = JSON.parse(itemStr!);
-        // localStorage.getItem("token");
-        // const userId = localStorage.getItem("userId");
-
         async function fetchData() {
             if (item.userId) {
                 const threadsData = await getThreads(Number(item.userId));
@@ -48,7 +40,22 @@ const Home = () => {
             }
         }
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, navigate]);
+
+    // useEffect(() => {
+    //     const itemStr = localStorage.getItem("item");
+    //     const item = JSON.parse(itemStr!);
+    //     // localStorage.getItem("token");
+    //     // const userId = localStorage.getItem("userId");
+
+    //     async function fetchData() {
+    //         if (item.userId) {
+    //             const threadsData = await getThreads(Number(item.userId));
+    //             dispatch(GET_THREADS(threadsData));
+    //         }
+    //     }
+    //     fetchData();
+    // }, [dispatch]);
 
     const createThread = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -92,11 +99,11 @@ const Home = () => {
         <Box>
             <Flex w={{ base: "100%", md: "100%" }} color={"black"} border={"2px"} borderColor={"whitesmoke"} p={10} flexDir={"column"}>
                 <Heading as={"h3"} size={"md"}>
-                    Home
+                    Hi {userLogin.full_name} ✌😊
                 </Heading>
 
                 <form onSubmit={createThread}>
-                    <HStack spacing={4} mt={5} mb={10}>
+                    <HStack spacing={4} mt={8} mb={10}>
                         <Avatar src={userLogin.image} name="profile" size={"md"} />
                         <Input type="text" placeholder="What is happening?!" border={"none"} name="content" />
                         <Box className="input-image">
