@@ -116,8 +116,8 @@ export default function DetailThread() {
                             </Flex>
                         </CardHeader>
                         <CardBody>
-                            <Text>{thread?.content}</Text>
-                            {thread.image && <Image src={thread.image} objectFit="cover" w={"100%"} mt={3} />}
+                            <Text mb="4">{thread?.content}</Text>
+                            {thread.image && <Image src={thread.image} objectFit="cover" w={"80%"} m="auto" />}
                         </CardBody>
 
                         <CardFooter

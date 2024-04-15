@@ -31,12 +31,11 @@ const CardThread = (Props: IThreads) => {
             }
 
             await postLike(threadId, item.token);
-            setIsLike(!isLike);
+            setIsLike((prev) => !prev);
             isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
 
             const threadsData = await getThreads(Number(item.userId));
             dispatch(GET_THREADS(threadsData));
-            console.log("success fetch threads after like");
         } catch (error) {
             console.log("error while post like", error);
             return error;
@@ -64,8 +63,8 @@ const CardThread = (Props: IThreads) => {
                     </Flex>
                 </CardHeader>
                 <CardBody>
-                    <Text>{Props.content}</Text>
-                    {Props.image && <Image src={Props.image} objectFit="cover" w={"100%"} mt={3} />}
+                    <Text mb="4">{Props.content}</Text>
+                    {Props.image && <Image src={Props.image} objectFit="cover" w={"80%"} mt={3} m={"auto"} />}
                 </CardBody>
 
                 <CardFooter

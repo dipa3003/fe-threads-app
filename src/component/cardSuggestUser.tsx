@@ -19,7 +19,7 @@ export default function CardSuggestUser(Props: ISuggestUser) {
             return navigate("/login");
         }
         const item = JSON.parse(itemStr!);
-        setFollow(!follow);
+        setFollow((prev) => !prev);
         const resp = await postFollow(id, item.token);
         if (resp.response.status == 401) {
             navigate("/login");
@@ -45,7 +45,7 @@ export default function CardSuggestUser(Props: ISuggestUser) {
             </Flex>
 
             <Button size={"xs"} rounded={"xl"} colorScheme="gray" onClick={() => handleFollowUser(Props.id)}>
-                {follow ? "UnFollow" : "Follow"}
+                {follow ? "Unfollow" : "Follow"}
             </Button>
         </Flex>
     );

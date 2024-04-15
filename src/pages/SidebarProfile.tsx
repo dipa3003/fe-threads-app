@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { getAllUsers, getLoginUser, getSuggestUser } from "../services/user.services";
@@ -7,11 +7,10 @@ import { GET_ALL_USER } from "../redux/features/allUserSlice";
 import { RootState } from "../redux/store";
 import CardSuggestUser from "../component/cardSuggestUser";
 import { GET_LOGIN_USER } from "../redux/features/userLoginSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ISuggestUser } from "../interface/suggestUser";
 
 const SidebarProfile = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
     const userLogin = useSelector((state: RootState) => state.userLogin.data);
     const [suggestUsers, setSuggestUsers] = useState<null | ISuggestUser[]>(null);
@@ -41,38 +40,29 @@ const SidebarProfile = () => {
 
     return (
         <>
-            {/* MODAL EDIT PROFILE */}
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Edit Profile</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <Input type="text" placeholder="Username" />
-                        <Input type="text" placeholder="Bio" />
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button variant="ghost">Save</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
             <Flex position={"sticky"} top={"0"} p={10} flexDir={"column"} gap={5}>
                 <Flex backgroundImage={"linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"} color={"black"} w={"full"} borderRadius={"5"} flexDir={"column"} p={5} gap={4}>
                     <Heading as={"h3"} size={"md"}>
                         My Profile
                     </Heading>
-                    <Image src={userLogin?.image ? userLogin?.image : ""} fallbackSrc="https://via.placeholder.com/150" objectFit={"cover"} alt="Profile" borderRadius="lg" height={"100"} width={"100%"} />
+                    <Image
+                        src={"https://img.freepik.com/free-photo/tibumana-waterfall-bali-island-indonesia_335224-356.jpg?t=st=1713162228~exp=1713165828~hmac=35c9bb6c43d5d0375a758d5576360161f3596b309f72588fbe706e403363a9ba&w=1060"}
+                        fallbackSrc="https://via.placeholder.com/150"
+                        objectFit={"cover"}
+                        alt="Profile"
+                        borderRadius="lg"
+                        height={"100"}
+                        width={"100%"}
+                    />
+                    {/* <Image src={userLogin?.image ? userLogin?.image : ""} fallbackSrc="https://via.placeholder.com/150" objectFit={"cover"} alt="Profile" borderRadius="lg" height={"100"} width={"100%"} /> */}
 
                     <Flex justifyContent={"space-between"}>
                         <Avatar src={userLogin?.image ? userLogin?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} border={"3px solid white"} />
-                        <Button size={"xs"} rounded={"md"} colorScheme="gray" onClick={onOpen}>
-                            Edit Profile
-                        </Button>
+                        <Link to="/profile">
+                            <Button size={"xs"} rounded={"md"} colorScheme="gray">
+                                Edit Profile
+                            </Button>
+                        </Link>
                     </Flex>
                     <Heading size="md">
                         {userLogin?.full_name} 👀

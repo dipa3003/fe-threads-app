@@ -60,6 +60,8 @@ const Profile = () => {
         const item = JSON.parse(itemStr!);
         const res = await updateProfile(item.token, dataUser);
         console.log(res?.statusText);
+        const userData = await getLoginUser(Number(item.userId));
+        dispatch(GET_LOGIN_USER(userData));
     };
 
     return (
@@ -71,7 +73,7 @@ const Profile = () => {
                     <ModalContent>
                         <ModalHeader>Edit Profile</ModalHeader>
                         <ModalCloseButton />
-                        <ModalBody>
+                        <ModalBody display="flex" flexDir={"column"} gap="6">
                             <Input type="text" placeholder="Fullname" name="full_name" />
                             <Input type="text" placeholder="Username" name="username" />
                             <Input type="text" placeholder="Bio" name="bio" />
@@ -79,10 +81,10 @@ const Profile = () => {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            <Button colorScheme="blue" variant="ghost" mr={3} onClick={onClose}>
                                 Close
                             </Button>
-                            <Button variant="ghost" type="submit">
+                            <Button colorScheme="blue" type="submit">
                                 Save
                             </Button>
                         </ModalFooter>
@@ -95,10 +97,19 @@ const Profile = () => {
                     <Heading as={"h3"} size={"md"}>
                         My Profile
                     </Heading>
-                    <Image src={userLogin?.image ? userLogin?.image : ""} fallbackSrc="https://via.placeholder.com/150" objectFit={"cover"} alt="Profile" borderRadius="lg" height={"150"} width={"100%"} />
+                    <Image
+                        src={"https://img.freepik.com/free-photo/tibumana-waterfall-bali-island-indonesia_335224-356.jpg?t=st=1713162228~exp=1713165828~hmac=35c9bb6c43d5d0375a758d5576360161f3596b309f72588fbe706e403363a9ba&w=1060"}
+                        fallbackSrc="https://via.placeholder.com/150"
+                        objectFit={"cover"}
+                        alt="Profile"
+                        borderRadius="lg"
+                        h={200}
+                        w="100%"
+                    />
+                    {/* <Image src={userLogin?.image ? userLogin?.image : ""} objectFit={"cover"} alt="Profile" borderRadius="lg" h={200} w="100%" /> */}
 
                     <Flex justifyContent={"space-between"}>
-                        <Avatar src={userLogin?.image ? userLogin?.image : ""} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} border={"3px solid white"} />
+                        <Avatar src={userLogin?.image} name={userLogin.full_name} objectFit={"cover"} size={"lg"} mt={"-12"} ml={4} border={"3px solid white"} />
                         <Button size={"sm"} rounded={"md"} colorScheme="gray" onClick={onOpen}>
                             Edit Profile
                         </Button>

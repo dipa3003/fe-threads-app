@@ -55,7 +55,7 @@ const Follow = () => {
                             follower.map((item) => (
                                 <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={item.id}>
                                     <Flex gap={3} alignItems={"center"}>
-                                        <Avatar src={item.following.image} size={"sm"} />
+                                        <Avatar src={item.following.image} name={item.following.full_name} size={"sm"} />
                                         <Flex flexDir={"column"}>
                                             <Text fontSize={"sm"} fontWeight={"bold"}>
                                                 {item.following.full_name}
