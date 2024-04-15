@@ -23,29 +23,13 @@ const SidebarProfile = () => {
             return navigate("/login");
         }
         const item = JSON.parse(itemStr!);
-        // if (item.expiry == null) navigate("/login");
 
         window.scrollTo(0, 0);
 
         async function fetchData() {
-            // const itemStr = localStorage.getItem("item");
-            // const item = JSON.parse(itemStr!);
-
-            // if (new Date().getTime() > item.expiry) {
-            //     localStorage.removeItem("item");
-            //     navigate("/login");
-            // }
-
-            // if (token) {
             const allSuggestUser = await getSuggestUser(item.token);
 
-            // if (allSuggestUser.status == 401) {
-            //     localStorage.removeItem("item");
-            //     navigate("/login");
-            // }
-
             setSuggestUsers(allSuggestUser);
-            // }
             const userData = await getLoginUser(Number(item.userId));
             dispatch(GET_LOGIN_USER(userData));
 
@@ -54,24 +38,6 @@ const SidebarProfile = () => {
         }
         fetchData();
     }, [dispatch, navigate]);
-
-    // useEffect(() => {
-    //     window.scrollTo(0, 0);
-    // }, []);
-
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         // const itemStr = localStorage.getItem("item");
-    //         // const item = JSON.parse(itemStr!);
-    //         // const id = localStorage.getItem("userId");
-    //         const userData = await getLoginUser(Number(item.userId));
-    //         dispatch(GET_LOGIN_USER(userData));
-
-    //         const allUser = await getAllUsers();
-    //         dispatch(GET_ALL_USER(allUser));
-    //     }
-    //     fetchData();
-    // }, [dispatch]);
 
     return (
         <>

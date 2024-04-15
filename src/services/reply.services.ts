@@ -13,15 +13,16 @@ export const getReplies = async () => {
 
 export const postReply = async (token: string, data: IReply) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/reply/add", data, {
+        const response = await axios.post(`http://localhost:5000/api/reply/add`, data, {
             headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
             },
         });
 
-        return response.data;
+        return response;
     } catch (error) {
         console.log(error);
-        return error;
+        throw error;
     }
 };

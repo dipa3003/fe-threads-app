@@ -37,17 +37,6 @@ const Follow = () => {
         fetchFollow();
     }, [dispatch, navigate]);
 
-    // const handleUnfollow = async () => {
-    //     const itemStr = localStorage.getItem("item");
-    //     if (!itemStr) {
-    //         return navigate("/login");
-    //     }
-    //     const item = JSON.parse(itemStr!);
-    //     setUnFollow(!unFollow);
-
-    //     // const res = await postFollow(id, item.token)
-    // };
-
     return (
         <Flex w={{ base: "100%", md: "100%" }} color={"black"} border={"2px"} borderColor={"whitesmoke"} p={10} flexDir={"column"}>
             <Heading as={"h3"} size={"md"}>
@@ -86,28 +75,6 @@ const Follow = () => {
                     <TabPanel display={"flex"} gap={5} flexDir={"column"}>
                         {/* LIST FOLLOWING */}
                         {followings && followings.map((following) => <CardFollowings key={following.id} id={following.id} created_at={following.created_at} follower={following.follower} />)}
-
-                        {/* {following &&
-                            following.map((item) => (
-                                <CardFollowings key={item.id} id={item.id} created_at={item.created_at} follower={item.follower} />
-                                // <Flex gap={3} alignItems={"center"} justifyContent={"space-between"} key={item.id}>
-                                //     <Flex gap={3} alignItems={"center"}>
-                                //         <Avatar src={item.follower.image} size={"sm"} />
-                                //         <Flex flexDir={"column"}>
-                                //             <Text fontSize={"sm"} fontWeight={"bold"}>
-                                //                 {item.follower.full_name}
-                                //             </Text>
-                                //             <Text color={"grey"} fontSize={"xs"}>
-                                //                 @{item.follower.username}
-                                //             </Text>
-                                //         </Flex>
-                                //     </Flex>
-
-                                //     <Button size={"sm"} rounded={"xl"} colorScheme="gray" opacity={"50%"} onClick={() => handleUnfollow()}>
-                                //         {unFollow ? "Follow" : "Followingg"}
-                                //     </Button>
-                                // </Flex>
-                            ))} */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>

@@ -19,10 +19,6 @@ const Home = () => {
     const toast = useToast();
 
     useEffect(() => {
-        window.scrollTo(0, 0);
-
-        // const token = localStorage.getItem("token");
-        // if (!token) navigate("/login");
         const itemStr = localStorage.getItem("item");
         if (!itemStr) {
             return navigate("/login");
@@ -37,25 +33,11 @@ const Home = () => {
             if (item.userId) {
                 const threadsData = await getThreads(Number(item.userId));
                 dispatch(GET_THREADS(threadsData));
+                console.log("success fetch threads");
             }
         }
         fetchData();
     }, [dispatch, navigate]);
-
-    // useEffect(() => {
-    //     const itemStr = localStorage.getItem("item");
-    //     const item = JSON.parse(itemStr!);
-    //     // localStorage.getItem("token");
-    //     // const userId = localStorage.getItem("userId");
-
-    //     async function fetchData() {
-    //         if (item.userId) {
-    //             const threadsData = await getThreads(Number(item.userId));
-    //             dispatch(GET_THREADS(threadsData));
-    //         }
-    //     }
-    //     fetchData();
-    // }, [dispatch]);
 
     const createThread = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -75,24 +57,18 @@ const Home = () => {
         const itemStr = localStorage.getItem("item");
         const item = JSON.parse(itemStr!);
 
-        // const token = localStorage.getItem("token");
         if (item.token) {
             const res = await postThread(dataThread, item.token);
             if (res.statusText == "Unauthorized" || res.status == 401) {
-                localStorage.removeItem("token");
+                localStorage.removeItem("item");
                 navigate("/login");
             }
 
-            if (res.statusText === "Created" || res.status === 201) {
-                // window.location.reload();
-                const userId = localStorage.getItem("userId");
-                const threadsData = await getThreads(Number(userId));
-                dispatch(GET_THREADS(threadsData));
-            }
+            // window.location.reload();
+            const threadsData = await getThreads(Number(item.userId));
+            dispatch(GET_THREADS(threadsData));
+            console.log("success postThread");
         }
-        // else {
-        //     navigate("/login");
-        // }
     };
 
     return (

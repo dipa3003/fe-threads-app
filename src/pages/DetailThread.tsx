@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, HStack, Heading, IconButton, Image, Input, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, HStack, Heading, Image, Input, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { HiOutlineChatBubbleBottomCenterText } from "react-icons/hi2";
@@ -10,27 +10,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_DETAIL_THREAD } from "../redux/features/detailThreadSlice";
 import { RootState } from "../redux/store";
 import { postReply } from "../services/reply.services";
-import CardThread from "../component/cardThread";
 import { timeAgo } from "../utils/timeConverter";
+import { postLike } from "../services/like.services";
 
 export default function DetailThread() {
+    const thread = useSelector((state: RootState) => state.detailThread.data);
+    const userLogin = useSelector((state: RootState) => state.userLogin.data);
     const {
         state: { threadId, isLiked },
     } = useLocation();
     const [like, setLike] = useState(isLiked);
-    const [countLike, setCountLike] = useState<number>(700);
-    const [clickLike, setClickLike] = useState(false);
+    const [countLike, setCountLike] = useState<number>(thread.likes_count);
     const [postImg, setPostImg] = useState<string>();
     const dispatch = useDispatch();
-    const thread = useSelector((state: RootState) => state.detailThread.data);
     const navigate = useNavigate();
-    const userLogin = useSelector((state: RootState) => state.userLogin.data);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
         async function fetchThreadData() {
             const dataThread = await getThreadById(Number(threadId));
             dispatch(GET_DETAIL_THREAD(dataThread));
@@ -38,10 +34,25 @@ export default function DetailThread() {
         fetchThreadData();
     }, [dispatch, threadId]);
 
-    function handleLike() {
+    async function handleLike() {
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
+
+        if (new Date().getTime() > item.expiry) {
+            localStorage.removeItem("item");
+            navigate("/login");
+        }
+
+        await postLike(threadId, item.token);
         setLike(!like);
-        setClickLike(!clickLike);
-        clickLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+        like ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+
+        const dataThread = await getThreadById(Number(threadId));
+        dispatch(GET_DETAIL_THREAD(dataThread));
+        console.log("success dispatch thread after like");
     }
 
     async function handlePostReply(e: React.FormEvent<HTMLFormElement>) {
@@ -51,20 +62,28 @@ export default function DetailThread() {
         const image = e.currentTarget.image.files[0];
 
         const dataReply = { content, image, threadId };
+        const itemStr = localStorage.getItem("item");
+        if (!itemStr) {
+            return navigate("/login");
+        }
+        const item = JSON.parse(itemStr!);
 
-        const token = localStorage.getItem("token");
-        if (token) {
-            const res = await postReply(token, dataReply);
-            if (res.statusText === "Unauthorized") {
-                localStorage.removeItem("token");
+        if (new Date().getTime() > item.expiry) {
+            localStorage.removeItem("item");
+            navigate("/login");
+        }
+
+        if (item.token) {
+            const res = await postReply(item.token, dataReply);
+            console.log("res postReply:", res);
+            if (res.statusText == "Unauthorized" || res.status == 401) {
+                localStorage.removeItem("item");
                 navigate("/login");
             }
-
-            if (res.statusText === "Created" || res.status === 201) {
-                window.location.reload();
-            }
-        } else {
-            navigate("/login");
+            console.log("success post reply");
+            const dataThread = await getThreadById(Number(threadId));
+            dispatch(GET_DETAIL_THREAD(dataThread));
+            console.log("success dispatch thread after reply");
         }
     }
 
@@ -80,60 +99,52 @@ export default function DetailThread() {
                     </Flex>
                 </Link>
 
-                {/* navigate back to home with no windows scroll to 0.0 */}
-                {/* <Flex flexDir={"row"} alignItems={"center"} gap={2} color={"black"} onClick={() => navigate("/")}>
-                    <IoArrowUndo />
-                    <Heading as={"h3"} size={"md"}>
-                        Status
-                    </Heading>
-                </Flex> */}
-
                 {/* CARD THREAD */}
-                {/* <Flex bg={"whitesmoke"} shadow={"lg"} p={10} w={"100%"} gap={4} mt={8} borderRadius={"lg"}>
-                    <Avatar src="/img/paslon.jpg" name="profile" size={"sm"} />
+                <Flex bg={"whitesmoke"} shadow="lg" mt={6} borderRadius={"lg"}>
+                    <Card w="2xl">
+                        <CardHeader background={"whitesmoke"} py={3}>
+                            <Flex>
+                                <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                                    <Avatar src={thread.user.image} name={thread?.user.full_name} />
 
-                    <Flex flexDir={"column"} gap={2}>
-                        <Flex gap={4} alignItems={"center"}>
-                            <Heading as={"h5"} size={"sm"}>
-                                {thread?.user.full_name}
-                            </Heading>
-                            <HStack>
-                                <Link to={"/username"}>
-                                    <Text fontWeight={"light"}>@{thread?.user.username}</Text>
-                                </Link>
-                                <Text> • {parseDate(thread?.created_at)}</Text>
-                            </HStack>
-                        </Flex>
-                        <Text>{thread?.content}</Text>
-                        {thread?.image && <Image src={thread.image} objectFit={"cover"} boxSize="xs" my={5} />}
-
-                        <Flex gap={10} alignItems={"center"}>
-                            <Flex gap={2} alignItems={"center"}>
-                                <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />
-                                <Text>{thread?.likes_count}</Text>
+                                    <Box>
+                                        <Heading size="sm">{thread?.user.full_name}</Heading>
+                                    </Box>
+                                    <Text>@{thread?.user.username}</Text>
+                                    <Text>{timeAgo(thread?.created_at)}</Text>
+                                </Flex>
                             </Flex>
-                            <Flex gap={3}>
-                                <HiOutlineChatBubbleBottomCenterText size={25} />
-                                <Text>{thread?.replies_count} Replies</Text>
-                            </Flex>
-                        </Flex>
-                    </Flex>
-                </Flex> */}
+                        </CardHeader>
+                        <CardBody>
+                            <Text>{thread?.content}</Text>
+                            {thread.image && <Image src={thread.image} objectFit="cover" w={"100%"} mt={3} />}
+                        </CardBody>
 
-                {/* NEW CARD */}
-                <CardThread
-                    key={thread.id}
-                    id={thread.id}
-                    user={thread.user}
-                    username={thread.user.username}
-                    full_name={thread.user.full_name}
-                    created_at={new Date(thread.created_at).toDateString()}
-                    content={thread.content}
-                    image={thread.image}
-                    likes_count={thread.likes_count}
-                    replies_count={thread.replies_count}
-                    isLiked={thread.isLiked}
-                />
+                        <CardFooter
+                            justify="space-between"
+                            flexWrap="wrap"
+                            sx={{
+                                "& > button": {
+                                    minW: "136px",
+                                },
+                            }}
+                        >
+                            <Flex flex="1" alignItems={"center"} onClick={handleLike}>
+                                <Button flex="1" variant="ghost" leftIcon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />}>
+                                    <Text>{thread?.likes_count} Likes</Text>
+                                </Button>
+                            </Flex>
+                            <Flex flex="1">
+                                <Button flex="1" variant="ghost" leftIcon={<HiOutlineChatBubbleBottomCenterText size={25} />}>
+                                    <Text>{thread?.replies_count} Replies</Text>
+                                </Button>
+                            </Flex>
+                            {/* <Button flex="1" variant="ghost" leftIcon={isLike ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />}>
+                        Share
+                    </Button> */}
+                        </CardFooter>
+                    </Card>
+                </Flex>
 
                 {/* INPUT REPLY */}
                 <form onSubmit={handlePostReply}>
@@ -154,7 +165,6 @@ export default function DetailThread() {
                 </form>
 
                 {/* CARD LIST REPLY */}
-
                 {thread?.replies &&
                     thread.replies.map((reply) => (
                         <Flex bg={"whitesmoke"} p={5} w={"100%"} gap={4} mt={2} borderRadius={"lg"} key={reply.id}>
@@ -169,15 +179,14 @@ export default function DetailThread() {
                                         <Link to={"/username"}>
                                             <Text fontWeight={"light"}>@{reply.user.username}</Text>
                                         </Link>
-                                        {/* <Text> • {new Date(reply.created_at).toDateString()}</Text> */}
                                         <Text> • {timeAgo(new Date(reply.created_at).toDateString())}</Text>
                                     </HStack>
                                 </Flex>
                                 <Text>{reply?.content}</Text>
                                 {/* Image for replies */}
-                                {reply.image && <Image src={reply.image} objectFit={"cover"} boxSize="xs" my={5} />}
+                                {reply.image && <Image src={reply.image} objectFit={"cover"} boxSize="xs" my={5} w={300} h={200} />}
 
-                                {/* Like and replies btn */}
+                                {/* Like and replies reply-content */}
                                 {/* <Flex gap={10} alignItems={"center"}>
                                     <Flex gap={2} alignItems={"center"}>
                                         <IconButton onClick={handleLike} colorScheme="inherit" icon={like ? <GoHeartFill size={25} color="red" /> : <GoHeart size={25} color="black" />} aria-label={"icon"} />

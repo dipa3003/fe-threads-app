@@ -6,25 +6,37 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postLike } from "../services/like.services";
 import { timeAgo } from "../utils/timeConverter";
+import { getThreads } from "../services/thread.services";
+import { GET_THREADS } from "../redux/features/threadSlice";
+import { useDispatch } from "react-redux";
 
 const CardThread = (Props: IThreads) => {
-    const navigate = useNavigate();
-
     const [isLike, setIsLike] = useState(Props.isLiked);
     const [countLike, setCountLike] = useState<number>(Props.likes_count);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     async function handleLike() {
         try {
-            const token = localStorage.getItem("token");
             const threadId = Props.id;
+            const itemStr = localStorage.getItem("item");
+            if (!itemStr) {
+                return navigate("/login");
+            }
+            const item = JSON.parse(itemStr!);
 
-            if (token) {
-                await postLike(threadId, token);
-                setIsLike(!isLike);
-                isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
-            } else {
+            if (new Date().getTime() > item.expiry) {
+                localStorage.removeItem("item");
                 navigate("/login");
             }
+
+            await postLike(threadId, item.token);
+            setIsLike(!isLike);
+            isLike ? setCountLike(countLike - 1) : setCountLike(countLike + 1);
+
+            const threadsData = await getThreads(Number(item.userId));
+            dispatch(GET_THREADS(threadsData));
+            console.log("success fetch threads after like");
         } catch (error) {
             console.log("error while post like", error);
             return error;

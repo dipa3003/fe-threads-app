@@ -2,16 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IFollowing } from "../../interface/follow";
 
 const data: IFollowing[] = [];
-// {
-//     id: 0,
-//     created_at: "",
-//     follower: {
-//         id: 0,
-//         full_name: "",
-//         username: "",
-//         image: "",
-//     },
-// };
 
 export const followingSlice = createSlice({
     name: "following",

@@ -21,7 +21,6 @@ const Login = () => {
 
         const dataLogin = { username, password };
 
-        // const login = async () => {
         const res = await authLogin(dataLogin);
         if (!res.token && res.response.status == 400) {
             return toast({
@@ -48,7 +47,6 @@ const Login = () => {
         });
 
         navigate("/", { replace: true });
-        // localStorage.setItem("userId", res.user.id);
 
         // };
         // login();
@@ -82,8 +80,8 @@ const Login = () => {
 
     return (
         <Box bg={"whitesmoke"} w={"lg"} mx={"auto"} mt={20} px={20} py={10}>
-            <Heading mb={5} textAlign={"center"} color={"lime"}>
-                LIFE
+            <Heading mb={5} textAlign={"center"} color="lime">
+                Galaxy
             </Heading>
             <Heading as={"h3"} size={"md"} mb={4}>
                 Login to your account!

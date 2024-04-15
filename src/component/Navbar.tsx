@@ -10,7 +10,7 @@ const Navbar = () => {
         <Flex position={"sticky"} top={"0"} as="nav" w={{ base: "0", md: "25%", lg: "100%" }} p={10} flexDir={"column"} gap={8} minH={"100vh"}>
             <Link to={"/"}>
                 <Heading as="h1" color={"lime"}>
-                    ENJOY
+                    Galaxy
                 </Heading>
             </Link>
 

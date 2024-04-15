@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { RiUserSearchLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { IUser } from "../interface/threads";
+import { IUser } from "../interface/user";
 
 const Search = () => {
     useEffect(() => {
